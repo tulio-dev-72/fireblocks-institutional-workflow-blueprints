@@ -24,7 +24,12 @@ export function DemoTopBar({
   const displayName = sessionReady ? actorName : "Loading…";
 
   async function handleSwitchRole() {
-    await exitSandboxSession({ clearRole, router });
+    await exitSandboxSession({
+      clearRole,
+      signOut: isSupabaseAuth ? signOut : undefined,
+      router,
+      endSession: isSupabaseAuth,
+    });
   }
 
   async function handleEndSession() {
