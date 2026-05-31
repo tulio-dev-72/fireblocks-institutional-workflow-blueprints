@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { extractFireblocksApiErrorDetails } from "@/lib/fireblocks/errors";
 import { requireFireblocksConfigured, requireFireblocksRole, TREASURY_OPS_ROLES } from "@/lib/fireblocks/route-utils";
 import { getTreasuryMainFundingInfo } from "@/lib/fireblocks/service";
 
@@ -23,13 +24,12 @@ export async function GET() {
     const funding = await getTreasuryMainFundingInfo();
     return NextResponse.json(funding);
   } catch (error) {
-    console.error("[fireblocks/treasury-main/funding] failed", error);
+    const detail = extractFireblocksApiErrorDetails(error);
+    console.error("[fireblocks/treasury-main/funding] failed", detail, error);
     return NextResponse.json(
       {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Unable to load Treasury Main funding details from Fireblocks.",
+        error: "Unable to load Treasury Main funding details from Fireblocks.",
+        detail,
       },
       { status: 502 },
     );

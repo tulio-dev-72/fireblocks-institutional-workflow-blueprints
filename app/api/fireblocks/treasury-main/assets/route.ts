@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { TREASURY_MAIN_VAULT_NAME } from "@/lib/fireblocks/constants";
+import { extractFireblocksApiErrorDetails } from "@/lib/fireblocks/errors";
 import { requireFireblocksConfigured, requireFireblocksRole, TREASURY_OPS_ROLES } from "@/lib/fireblocks/route-utils";
 import { getTreasuryMainVault, listSupportedAssets, listVaultAssets } from "@/lib/fireblocks/service";
 
@@ -46,12 +47,12 @@ export async function GET() {
       })),
     });
   } catch (error) {
+    const detail = extractFireblocksApiErrorDetails(error);
+    console.error("[fireblocks/treasury-main/assets] failed", detail, error);
     return NextResponse.json(
       {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Unable to load Treasury Main assets from Fireblocks.",
+        error: "Unable to load Treasury Main assets from Fireblocks.",
+        detail,
       },
       { status: 502 },
     );

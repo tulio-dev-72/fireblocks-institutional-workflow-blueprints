@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { extractFireblocksApiErrorDetails } from "@/lib/fireblocks/errors";
 import { requireFireblocksConfigured, requireFireblocksRole, TREASURY_OPS_ROLES } from "@/lib/fireblocks/route-utils";
 import { fetchFireblocksVaultBalances } from "@/lib/fireblocks/service";
 
@@ -21,12 +22,12 @@ export async function GET() {
     const vaults = await fetchFireblocksVaultBalances();
     return NextResponse.json({ vaults });
   } catch (error) {
+    const detail = extractFireblocksApiErrorDetails(error);
+    console.error("[fireblocks/vaults] failed", detail, error);
     return NextResponse.json(
       {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Failed to load Fireblocks vault balances.",
+        error: "Failed to load Fireblocks vault balances.",
+        detail,
       },
       { status: 502 },
     );
