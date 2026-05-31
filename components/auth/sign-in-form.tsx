@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { useAuth } from "@/components/auth/auth-provider";
+import { DemoAccountsPanel } from "@/components/auth/demo-accounts-panel";
 import { Card, InputLabel, PrimaryButton, SectionHeader, TextInput } from "@/components/ui/primitives";
 import { ACCESS_PORTAL_SUBTITLE, ACCESS_PORTAL_TITLE } from "@/data/sandbox-roles";
 import { isDemoModeEnabled } from "@/lib/supabase/config";
@@ -27,20 +28,23 @@ export function SignInForm() {
     }
   }, [isSupabaseAuth, router]);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function signIn(emailValue: string, passwordValue: string) {
     setError(null);
     setSubmitting(true);
 
     try {
       const supabase = createSupabaseBrowserClient();
       const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password,
+        email: emailValue.trim(),
+        password: passwordValue,
       });
 
       if (signInError) {
-        setError(signInError.message);
+        setError(
+          signInError.message === "Invalid login credentials"
+            ? "Sandbox accounts are not seeded in Supabase. Run supabase/seed-users.sql, or use the role buttons on the access portal."
+            : signInError.message,
+        );
         return;
       }
 
@@ -62,6 +66,17 @@ export function SignInForm() {
     } finally {
       setSubmitting(false);
     }
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    await signIn(email, password);
+  }
+
+  function handleSelectAccount(account: { email: string; password: string }) {
+    setEmail(account.email);
+    setPassword(account.password);
+    void signIn(account.email, account.password);
   }
 
   if (!isSupabaseAuth) {
@@ -105,6 +120,13 @@ export function SignInForm() {
             {submitting ? "Authenticating…" : "Authenticate"}
           </PrimaryButton>
         </form>
+      </Card>
+
+      <Card variant="elevated">
+        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-ops-text-dim">
+          Sandbox quick access
+        </p>
+        <DemoAccountsPanel onSelectAccount={handleSelectAccount} />
       </Card>
 
       <p className="text-center text-xs text-ops-text-secondary">
