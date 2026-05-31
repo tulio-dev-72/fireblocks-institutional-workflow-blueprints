@@ -2,12 +2,11 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/components/auth/auth-provider";
 import { DemoAccountsPanel } from "@/components/auth/demo-accounts-panel";
-import { Card, InputLabel, PrimaryButton, SectionHeader, TextInput } from "@/components/ui/primitives";
-import { ACCESS_PORTAL_SUBTITLE, ACCESS_PORTAL_TITLE } from "@/data/sandbox-roles";
-import { isDemoModeEnabled } from "@/lib/supabase/config";
+import { Card, SectionHeader } from "@/components/ui/primitives";
+import { ACCESS_PORTAL_TITLE } from "@/data/sandbox-roles";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { fetchUserProfile } from "@/lib/supabase/profiles";
 import { ACCESS_PORTAL, AUTH_ROLE, OPERATIONS_HOME } from "@/lib/supabase/routes";
@@ -16,8 +15,6 @@ export function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { isSupabaseAuth, refreshSession } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const next = searchParams.get("next") ?? OPERATIONS_HOME;
@@ -68,14 +65,7 @@ export function SignInForm() {
     }
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    await signIn(email, password);
-  }
-
   function handleSelectAccount(account: { email: string; password: string }) {
-    setEmail(account.email);
-    setPassword(account.password);
     void signIn(account.email, account.password);
   }
 
@@ -86,47 +76,17 @@ export function SignInForm() {
   return (
     <div className="space-y-4">
       <SectionHeader
-        label="Institutional credentials"
-        title="Authenticate"
-        subtitle="Sign in with organization credentials, or return to the access portal for sandbox role entry."
+        label="Institutional access"
+        title="Select a role"
+        subtitle="Choose a sandbox role to enter the Treasury Control Center. No credentials required."
       />
 
       <Card variant="elevated">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <InputLabel htmlFor="email">Email</InputLabel>
-            <TextInput
-              id="email"
-              type="email"
-              autoComplete="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <TextInput
-              id="password"
-              type="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              required
-            />
-          </div>
-          {error ? <p className="text-xs text-ops-danger">{error}</p> : null}
-          <PrimaryButton type="submit" className="w-full" disabled={submitting}>
-            {submitting ? "Authenticating…" : "Authenticate"}
-          </PrimaryButton>
-        </form>
-      </Card>
-
-      <Card variant="elevated">
-        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-ops-text-dim">
-          Sandbox quick access
-        </p>
         <DemoAccountsPanel onSelectAccount={handleSelectAccount} />
+        {submitting ? (
+          <p className="mt-3 text-xs text-ops-text-secondary">Authenticating…</p>
+        ) : null}
+        {error ? <p className="mt-3 text-xs text-ops-danger">{error}</p> : null}
       </Card>
 
       <p className="text-center text-xs text-ops-text-secondary">
@@ -134,10 +94,6 @@ export function SignInForm() {
           ← Return to {ACCESS_PORTAL_TITLE}
         </Link>
       </p>
-
-      {isDemoModeEnabled() ? (
-        <p className="text-center text-[10px] text-ops-text-dim">{ACCESS_PORTAL_SUBTITLE}</p>
-      ) : null}
     </div>
   );
 }
