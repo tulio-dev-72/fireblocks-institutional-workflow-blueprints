@@ -23,6 +23,13 @@ export async function exitSandboxSession({
     await signOut();
   }
 
+  // Hard navigation to the portal: guarantees the middleware re-evaluates with
+  // the cleared iwb_role cookie and avoids the router.replace()/refresh() race
+  // that left the client stuck on "Returning to access portal...".
+  if (typeof window !== "undefined") {
+    window.location.assign(ACCESS_PORTAL);
+    return;
+  }
+
   router.replace(ACCESS_PORTAL);
-  router.refresh();
 }
