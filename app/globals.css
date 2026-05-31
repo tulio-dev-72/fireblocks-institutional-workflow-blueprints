@@ -2,40 +2,40 @@
 
 :root {
   /* Enterprise treasury — high-contrast light surfaces, deep operational type */
-  --ops-bg: #e2e8ef;
-  --ops-bg-gradient-top: #eaedf3;
-  --ops-bg-gradient-bottom: #d8dee8;
-  --ops-surface: #ffffff;
-  --ops-elevated: #ffffff;
-  --ops-overlay: #d4dce6;
-  --ops-border: #9aaaba;
-  --ops-border-subtle: #b0bcc9;
-  --ops-text: #041018;
-  --ops-text-secondary: #1a2b3d;
-  --ops-text-dim: #3d5066;
+  --ops-bg: #f4f0e5;
+  --ops-bg-gradient-top: #f7f3ea;
+  --ops-bg-gradient-bottom: #ece4d3;
+  --ops-surface: #fcfaf3;
+  --ops-elevated: #fffdf7;
+  --ops-overlay: #ece4d3;
+  --ops-border: #cdc2aa;
+  --ops-border-subtle: #e0d8c5;
+  --ops-text: #272219;
+  --ops-text-secondary: #4a4234;
+  --ops-text-dim: #857850;
 
   /* Navy primary actions — strong visibility for live ops */
-  --ops-primary: #061525;
-  --ops-primary-hover: #020a12;
-  --ops-primary-muted: rgba(6, 21, 37, 0.11);
+  --ops-primary: #2b251c;
+  --ops-primary-hover: #1c1813;
+  --ops-primary-muted: rgba(43, 37, 28, 0.10);
 
   /* Muted orange — accent only */
-  --ops-accent: #b84a2c;
-  --ops-accent-hover: #9f3d24;
-  --ops-accent-muted: rgba(184, 74, 44, 0.14);
+  --ops-accent: #2e7d5b;
+  --ops-accent-hover: #25664a;
+  --ops-accent-muted: rgba(46, 125, 91, 0.14);
 
-  --ops-success: #065f46;
-  --ops-success-muted: rgba(6, 95, 70, 0.14);
-  --ops-warning: #8a550f;
-  --ops-warning-muted: rgba(138, 85, 15, 0.16);
-  --ops-danger: #991b1b;
-  --ops-danger-muted: rgba(153, 27, 27, 0.12);
-  --ops-info: #1e40af;
-  --ops-info-muted: rgba(30, 64, 175, 0.12);
+  --ops-success: #2f6f4f;
+  --ops-success-muted: rgba(47, 111, 79, 0.14);
+  --ops-warning: #9a6a1e;
+  --ops-warning-muted: rgba(154, 106, 30, 0.16);
+  --ops-danger: #a23a2a;
+  --ops-danger-muted: rgba(162, 58, 42, 0.12);
+  --ops-info: #3a5f7d;
+  --ops-info-muted: rgba(58, 95, 125, 0.12);
 
-  --ops-shadow-sm: 0 1px 2px rgba(4, 16, 24, 0.08), 0 1px 3px rgba(4, 16, 24, 0.1);
-  --ops-shadow-md: 0 4px 16px rgba(4, 16, 24, 0.1), 0 2px 4px rgba(4, 16, 24, 0.07);
-  --ops-shadow-lg: 0 14px 36px rgba(4, 16, 24, 0.12), 0 4px 10px rgba(4, 16, 24, 0.08);
+  --ops-shadow-sm: 0 1px 2px rgba(40, 34, 25, 0.07), 0 1px 3px rgba(40, 34, 25, 0.09);
+  --ops-shadow-md: 0 4px 16px rgba(40, 34, 25, 0.09), 0 2px 4px rgba(40, 34, 25, 0.06);
+  --ops-shadow-lg: 0 14px 36px rgba(40, 34, 25, 0.11), 0 4px 10px rgba(40, 34, 25, 0.07);
 
   /* Legacy aliases */
   --fb-black: var(--ops-text);
@@ -152,9 +152,9 @@ body {
 .landing-hero {
   background: linear-gradient(
     165deg,
-    #f4f6f9 0%,
-    #e8edf3 42%,
-    #dde4ec 100%
+    #f7f3ea 0%,
+    #efe8d8 42%,
+    #e6ddc9 100%
   );
 }
 
@@ -162,8 +162,8 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(6, 21, 37, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(6, 21, 37, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(40, 34, 25, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(40, 34, 25, 0.05) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.85), transparent 95%);
   animation: landing-grid-drift 28s linear infinite;
@@ -173,8 +173,8 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(30, 64, 175, 0.08), transparent 55%),
-    radial-gradient(ellipse 60% 40% at 85% 15%, rgba(184, 74, 44, 0.06), transparent 50%);
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(46, 125, 91, 0.10), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 85% 15%, rgba(200, 169, 106, 0.06), transparent 50%);
   pointer-events: none;
 }
 
@@ -219,3 +219,6 @@ body {
     animation: none;
   }
 }
+
+/* bp-heading-font: display headings on Bricolage */
+h1, h2, h3 { font-family: var(--font-bricolage), ui-sans-serif, sans-serif; letter-spacing: -0.3px; }
