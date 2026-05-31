@@ -47,13 +47,9 @@ export async function GET() {
       })),
     });
   } catch (error) {
-    const detail = extractFireblocksApiErrorDetails(error);
-    console.error("[fireblocks/treasury-main/assets] failed", detail, error);
+    console.error("[fireblocks/treasury-main/assets] failed", extractFireblocksApiErrorDetails(error), error);
     return NextResponse.json(
-      {
-        error: "Unable to load Treasury Main assets from Fireblocks.",
-        detail,
-      },
+      { error: "Unable to load Treasury Main assets from Fireblocks." },
       { status: 502 },
     );
   }

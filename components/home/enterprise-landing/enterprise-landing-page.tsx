@@ -118,7 +118,7 @@ export function EnterpriseLandingPage() {
 
   return (
     <div className="min-h-screen bg-ops-bg text-ops-text">
-      <LandingHeader connected={infrastructure.connected} isSupabaseAuth={isSupabaseAuth} />
+      <LandingHeader connected={infrastructure.connected} />
 
       <LandingHero
         stats={infrastructure.heroStats}
@@ -139,15 +139,6 @@ export function EnterpriseLandingPage() {
       <LandingArchitectureSection fireblocksConnected={infrastructure.connected} />
 
       <SandboxAccessSection busyRole={busyRole} error={error} onEnterRole={(role) => void handleEnterRole(role)} />
-
-      {isSupabaseAuth ? (
-        <p className="border-t border-ops-border/60 bg-ops-surface py-4 text-center text-[11px] text-ops-text-dim">
-          Organization credentials?{" "}
-          <a href="/auth/sign-in" className="font-semibold text-ops-primary hover:underline">
-            Institutional sign-in
-          </a>
-        </p>
-      ) : null}
     </div>
   );
 }

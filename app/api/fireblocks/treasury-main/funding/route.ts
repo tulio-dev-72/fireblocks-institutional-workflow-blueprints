@@ -24,13 +24,9 @@ export async function GET() {
     const funding = await getTreasuryMainFundingInfo();
     return NextResponse.json(funding);
   } catch (error) {
-    const detail = extractFireblocksApiErrorDetails(error);
-    console.error("[fireblocks/treasury-main/funding] failed", detail, error);
+    console.error("[fireblocks/treasury-main/funding] failed", extractFireblocksApiErrorDetails(error), error);
     return NextResponse.json(
-      {
-        error: "Unable to load Treasury Main funding details from Fireblocks.",
-        detail,
-      },
+      { error: "Unable to load Treasury Main funding details from Fireblocks." },
       { status: 502 },
     );
   }

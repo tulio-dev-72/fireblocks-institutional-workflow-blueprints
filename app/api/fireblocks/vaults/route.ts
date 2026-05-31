@@ -22,13 +22,9 @@ export async function GET() {
     const vaults = await fetchFireblocksVaultBalances();
     return NextResponse.json({ vaults });
   } catch (error) {
-    const detail = extractFireblocksApiErrorDetails(error);
-    console.error("[fireblocks/vaults] failed", detail, error);
+    console.error("[fireblocks/vaults] failed", extractFireblocksApiErrorDetails(error), error);
     return NextResponse.json(
-      {
-        error: "Failed to load Fireblocks vault balances.",
-        detail,
-      },
+      { error: "Failed to load Fireblocks vault balances." },
       { status: 502 },
     );
   }
