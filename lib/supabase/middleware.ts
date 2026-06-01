@@ -50,14 +50,6 @@ export async function updateSupabaseSession(request: NextRequest) {
       return response;
     }
 
-    if (pathname === ACCESS_PORTAL && demoRole && VALID_DEMO_ROLES.has(demoRole)) {
-      const destination = getRoleDestination(demoRole as "analyst" | "treasury_manager" | "admin");
-      const operationsUrl = request.nextUrl.clone();
-      operationsUrl.pathname = destination;
-      operationsUrl.search = "";
-      return NextResponse.redirect(operationsUrl);
-    }
-
     if (requiresAuth(pathname) && (!demoRole || !VALID_DEMO_ROLES.has(demoRole))) {
       const portalUrl = request.nextUrl.clone();
       portalUrl.pathname = ACCESS_PORTAL;
@@ -110,18 +102,6 @@ export async function updateSupabaseSession(request: NextRequest) {
     signInUrl.pathname = AUTH_SIGN_IN;
     signInUrl.searchParams.set("next", pathname);
     return NextResponse.redirect(signInUrl);
-  }
-
-  if (user && pathname === ACCESS_PORTAL) {
-    const sandboxRole = request.cookies.get("iwb_role")?.value;
-    if (sandboxRole && VALID_DEMO_ROLES.has(sandboxRole)) {
-      const operationsUrl = request.nextUrl.clone();
-      operationsUrl.pathname = getRoleDestination(
-        sandboxRole as "analyst" | "treasury_manager" | "admin",
-      );
-      operationsUrl.search = "";
-      return NextResponse.redirect(operationsUrl);
-    }
   }
 
   if (user && isPublicAuthPath(pathname)) {

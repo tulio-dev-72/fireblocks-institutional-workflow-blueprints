@@ -23,7 +23,7 @@ export function EnterpriseLandingPage() {
   const searchParams = useSearchParams();
   const requestedNext = searchParams.get("next");
   const { loading, isSupabaseAuth, isDemoMode, refreshSession } = useAuth();
-  const { effectiveRole, setRole, setActiveBlueprint, setWorkflowStep, sessionReady } = useAppStore();
+  const { setRole, setActiveBlueprint, setWorkflowStep, sessionReady } = useAppStore();
   const infrastructure = useLandingInfrastructure();
   const [busyRole, setBusyRole] = useState<UserRole | null>(null);
   const [entering, setEntering] = useState(false);
@@ -44,16 +44,6 @@ export function EnterpriseLandingPage() {
       });
     }
   }, [loading, infrastructure.loading, infrastructure.connected]);
-
-  useEffect(() => {
-    if (loading || !sessionReady || busyRole || entering) {
-      return;
-    }
-
-    if (effectiveRole) {
-      router.replace(resolveSandboxNavigation(effectiveRole, requestedNext));
-    }
-  }, [loading, sessionReady, effectiveRole, busyRole, entering, requestedNext, router]);
 
   const handleEnterRole = useCallback(
     async (role: UserRole, blueprintId?: string | null) => {
@@ -123,7 +113,7 @@ export function EnterpriseLandingPage() {
     return <SandboxLoginScreen role={busyRole} />;
   }
 
-  if (entering || (effectiveRole && !busyRole)) {
+  if (entering) {
     return <PageLoadingState label="Entering operational workspace…" />;
   }
 
