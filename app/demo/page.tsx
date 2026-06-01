@@ -33,6 +33,8 @@ export default function DemoDashboardPage() {
       <DemoTopBar
         title="Operations dashboard"
         subtitle="Vault accounts, transaction authorization queue, and policy exceptions."
+        titleHintLabel="How the workspace and flow work"
+        titleHint="The bottom tabs are role-scoped places: Ops (this dashboard overview), Init (analysts start a settlement), Auth (managers authorize held settlements), Audit (the immutable record), and Gov (admin policy & config). A single settlement travels: Request → Policy → Authorize → MPC Custody → Webhooks → Audit — shown in the step bar on each workflow page."
       />
 
       <main className="ops-page">

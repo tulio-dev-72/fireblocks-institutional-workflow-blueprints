@@ -1,7 +1,9 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { RoleBadge, LiveBadge } from "@/components/ui/badges";
+import { InfoTooltip } from "@/components/ui/info-tooltip";
 import { useAuth } from "@/components/auth/auth-provider";
 import { exitSandboxSession } from "@/lib/auth/exit-sandbox-session";
 import { useFireblocksConnection } from "@/lib/fireblocks/use-fireblocks-connection";
@@ -12,9 +14,13 @@ const shellMaxWidth = "max-w-lg md:max-w-2xl xl:max-w-4xl";
 export function DemoTopBar({
   title,
   subtitle,
+  titleHint,
+  titleHintLabel,
 }: {
   title: string;
   subtitle?: string;
+  titleHint?: ReactNode;
+  titleHintLabel?: string;
 }) {
   const router = useRouter();
   const { isSupabaseAuth, signOut } = useAuth();
@@ -53,7 +59,17 @@ export function DemoTopBar({
             </p>
             <LiveBadge live={connected} />
           </div>
-          <h1 className="mt-1 text-lg font-semibold tracking-tight text-ops-text">{title}</h1>
+          <div className="mt-1 flex items-center gap-1.5">
+            <h1 className="text-lg font-semibold tracking-tight text-ops-text">{title}</h1>
+            {titleHint ? (
+              <InfoTooltip
+                label={titleHintLabel ?? `More about ${title}`}
+                content={titleHint}
+                side="bottom"
+                align="start"
+              />
+            ) : null}
+          </div>
           {subtitle ? (
             <p className="mt-1 text-sm leading-relaxed text-ops-text-secondary">{subtitle}</p>
           ) : null}
