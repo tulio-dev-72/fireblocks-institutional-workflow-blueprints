@@ -13,6 +13,20 @@ export function getRoleLabel(role: string): string {
   }
 }
 
+/** Compact role label for dense UI (chips, badges). */
+export function getRoleShortLabel(role: string): string {
+  switch (role) {
+    case "analyst":
+      return "Analyst";
+    case "treasury_manager":
+      return "Manager";
+    case "admin":
+      return "Admin";
+    default:
+      return "Account";
+  }
+}
+
 export function isUserRole(role: string): role is UserRole {
   return role === "analyst" || role === "treasury_manager" || role === "admin";
 }

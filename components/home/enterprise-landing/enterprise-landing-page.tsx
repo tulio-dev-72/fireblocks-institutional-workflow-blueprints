@@ -127,10 +127,13 @@ export function EnterpriseLandingPage() {
       <LandingHero
         stats={infrastructure.heroStats}
         onLaunchSandbox={() => scrollToSection("sandbox-access")}
-        onExploreStories={() => scrollToSection("infrastructure-stories")}
+        onViewScenarios={() => scrollToSection("settlement-scenarios")}
       />
 
-      <InfrastructureStoriesSection onExploreWorkflow={() => scrollToSection("sandbox-access")} />
+      <InfrastructureStoriesSection
+        busyRole={busyRole}
+        onEnterRole={(role) => void handleEnterRole(role)}
+      />
 
       <LiveOperationsPreview
         preview={infrastructure.preview}

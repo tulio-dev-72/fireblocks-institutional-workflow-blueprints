@@ -1,7 +1,6 @@
 export const AUTH_SIGN_IN = "/auth/sign-in";
 export const AUTH_SIGN_UP = "/auth/sign-up";
 export const AUTH_ROLE = "/auth/role";
-export const DEMO_LOGIN = "/demo/login";
 export const ACCESS_PORTAL = "/";
 export const OPERATIONS_HOME = "/operations";
 
@@ -19,7 +18,7 @@ export function isAccessPortalPath(pathname: string): boolean {
 
 /** Public entry and auth pages — no session required. */
 export function isPublicPath(pathname: string): boolean {
-  return isAccessPortalPath(pathname) || isPublicAuthPath(pathname) || pathname === DEMO_LOGIN;
+  return isAccessPortalPath(pathname) || isPublicAuthPath(pathname);
 }
 
 export function isRoleSelectionPath(pathname: string): boolean {

@@ -1,6 +1,6 @@
 "use client";
 
-import { GhostButton, PrimaryButton } from "@/components/ui/primitives";
+import { PrimaryButton } from "@/components/ui/primitives";
 
 type HeroStatStatus = "active" | "provisioned" | "inactive";
 
@@ -34,10 +34,10 @@ const STAT_STYLES: Record<
 type LandingHeroProps = {
   stats: HeroStat[];
   onLaunchSandbox: () => void;
-  onExploreStories: () => void;
+  onViewScenarios: () => void;
 };
 
-export function LandingHero({ stats, onLaunchSandbox, onExploreStories }: LandingHeroProps) {
+export function LandingHero({ stats, onLaunchSandbox, onViewScenarios }: LandingHeroProps) {
   return (
     <section className="landing-hero relative overflow-hidden">
       <div className="landing-grid-bg" aria-hidden />
@@ -56,7 +56,7 @@ export function LandingHero({ stats, onLaunchSandbox, onExploreStories }: Landin
             authorization, MPC custody, and on-chain settlement powered by Fireblocks infrastructure.
           </p>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-5">
             <PrimaryButton
               type="button"
               className="w-full sm:w-auto sm:min-w-[15rem]"
@@ -64,13 +64,13 @@ export function LandingHero({ stats, onLaunchSandbox, onExploreStories }: Landin
             >
               Launch Operational Sandbox
             </PrimaryButton>
-            <GhostButton
+            <button
               type="button"
-              className="w-full sm:w-auto sm:min-w-[15rem]"
-              onClick={onExploreStories}
+              onClick={onViewScenarios}
+              className="text-sm font-medium text-ops-text-secondary underline-offset-4 transition hover:text-ops-text hover:underline"
             >
-              Explore Infrastructure Stories
-            </GhostButton>
+              See settlement scenarios ↓
+            </button>
           </div>
         </div>
 

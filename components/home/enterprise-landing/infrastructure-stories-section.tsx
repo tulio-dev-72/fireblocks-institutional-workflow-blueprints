@@ -1,7 +1,9 @@
 "use client";
 
-import { GhostButton, SectionHeader } from "@/components/ui/primitives";
-import { INFRASTRUCTURE_STORIES } from "@/data/infrastructure-stories";
+import { SectionHeader } from "@/components/ui/primitives";
+import { INFRASTRUCTURE_STORIES, type ScenarioRoleTier } from "@/data/infrastructure-stories";
+import { getRoleLabel, getRoleShortLabel } from "@/lib/auth/role-labels";
+import type { UserRole } from "@/lib/types";
 
 const statusStyles = {
   Operational: "bg-ops-success-muted text-ops-success ring-ops-success/25",
@@ -9,20 +11,31 @@ const statusStyles = {
   Governed: "bg-ops-warning-muted text-ops-warning ring-ops-warning/25",
 } as const;
 
+const roleTierStyles: Record<ScenarioRoleTier, string> = {
+  primary:
+    "border-transparent bg-ops-primary text-white hover:bg-ops-primary-hover shadow-[var(--ops-shadow-sm)]",
+  secondary:
+    "border-ops-primary/30 bg-ops-primary-muted text-ops-primary hover:border-ops-primary/50",
+  tertiary:
+    "border-ops-border-subtle bg-ops-overlay/40 text-ops-text-secondary hover:border-ops-border hover:text-ops-text",
+};
+
 type InfrastructureStoriesSectionProps = {
-  onExploreWorkflow: () => void;
+  busyRole: UserRole | null;
+  onEnterRole: (role: UserRole) => void;
 };
 
 export function InfrastructureStoriesSection({
-  onExploreWorkflow,
+  busyRole,
+  onEnterRole,
 }: InfrastructureStoriesSectionProps) {
   return (
-    <section id="infrastructure-stories" className="border-t border-ops-border/70 bg-ops-surface/60">
+    <section id="settlement-scenarios" className="border-t border-ops-border/70 bg-ops-surface/60">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
         <SectionHeader
-          label="Operational infrastructure stories"
+          label="Settlement scenarios"
           title="Governed settlement workflows"
-          subtitle="Six institutional scenarios demonstrating differentiated operational capability on Fireblocks custody infrastructure."
+          subtitle="Six institutional scenarios demonstrating differentiated operational capability on Fireblocks custody infrastructure. Enter any scenario as one of its roles."
         />
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -56,17 +69,41 @@ export function InfrastructureStoriesSection({
                   </span>
                 ))}
               </div>
+
+              <div className="mt-4 border-t border-ops-border-subtle pt-3">
+                <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-ops-text-dim">
+                  Run this workflow as
+                </p>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {story.roles.map((scenarioRole) => {
+                    const isBusy = busyRole === scenarioRole.role;
+                    const isDisabled = busyRole !== null;
+                    const label =
+                      scenarioRole.tier === "primary"
+                        ? getRoleLabel(scenarioRole.role)
+                        : getRoleShortLabel(scenarioRole.role);
+
+                    return (
+                      <button
+                        key={`${story.id}-${scenarioRole.role}`}
+                        type="button"
+                        disabled={isDisabled}
+                        onClick={() => onEnterRole(scenarioRole.role)}
+                        title={`${getRoleLabel(scenarioRole.role)} — ${scenarioRole.action}`}
+                        aria-label={`Enter ${story.title} as ${getRoleLabel(scenarioRole.role)} (${scenarioRole.tier} role): ${scenarioRole.action}`}
+                        className={`inline-flex min-h-9 items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-60 ${roleTierStyles[scenarioRole.tier]}`}
+                      >
+                        <span>{isBusy ? "Entering…" : label}</span>
+                        {scenarioRole.tier === "primary" && !isBusy ? (
+                          <span aria-hidden>→</span>
+                        ) : null}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </article>
           ))}
-        </div>
-
-        <div className="mt-10 flex flex-col items-center gap-2 text-center">
-          <p className="text-sm text-ops-text-secondary">
-            Run the live stablecoin settlement workflow end-to-end in the sandbox.
-          </p>
-          <GhostButton type="button" className="px-6" onClick={onExploreWorkflow}>
-            Launch the operational sandbox →
-          </GhostButton>
         </div>
       </div>
     </section>

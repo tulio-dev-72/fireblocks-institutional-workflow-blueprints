@@ -13,7 +13,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-Without Supabase env vars, the app runs in **Demo Mode** (role buttons at `/demo/login`). See [docs/SUPABASE.md](docs/SUPABASE.md) and [docs/FIREBLOCKS.md](docs/FIREBLOCKS.md).
+Without Supabase env vars, the app runs in **Demo Mode** (role buttons on the home page at `/`). See [docs/SUPABASE.md](docs/SUPABASE.md) and [docs/FIREBLOCKS.md](docs/FIREBLOCKS.md).
 
 ## Deploy (Vercel)
 

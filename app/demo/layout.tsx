@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { DemoBottomNav } from "@/components/demo/bottom-nav";
 import { DemoRouteGuard } from "@/components/demo/route-guard";
@@ -10,25 +10,23 @@ import { ACCESS_PORTAL } from "@/lib/supabase/routes";
 import { useAppStore } from "@/lib/store";
 
 export default function DemoLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
   const router = useRouter();
   const { sessionReady, effectiveRole } = useAppStore();
-  const isLoginPage = pathname === "/demo/login";
-  const showShell = sessionReady && effectiveRole !== null && !isLoginPage;
+  const showShell = sessionReady && effectiveRole !== null;
 
   useFireblocksStatusSync();
 
   useEffect(() => {
-    if (sessionReady && !effectiveRole && !isLoginPage) {
+    if (sessionReady && !effectiveRole) {
       router.replace(ACCESS_PORTAL);
     }
-  }, [sessionReady, effectiveRole, isLoginPage, router]);
+  }, [sessionReady, effectiveRole, router]);
 
   if (!sessionReady) {
     return <PageLoadingState label="Loading operational workspace…" />;
   }
 
-  if (!effectiveRole && !isLoginPage) {
+  if (!effectiveRole) {
     return <PageLoadingState label="Returning to access portal…" />;
   }
 

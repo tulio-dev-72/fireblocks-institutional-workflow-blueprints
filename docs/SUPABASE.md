@@ -51,7 +51,7 @@ NEXT_PUBLIC_DEMO_MODE=true
 
 When **no Supabase env vars** are set in development, or `NEXT_PUBLIC_DEMO_MODE=true`:
 
-- Role buttons at `/demo/login`
+- Role buttons on the home page at `/`
 - Cookie-based session (`iwb_role`)
 - No Supabase required
 

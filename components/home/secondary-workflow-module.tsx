@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { Blueprint } from "@/lib/types";
+import { ACCESS_PORTAL } from "@/lib/supabase/routes";
 import { useAppStore } from "@/lib/store";
 
 function MetaRow({ label, value }: { label: string; value: string }) {
@@ -63,7 +64,7 @@ export function SecondaryWorkflowModule({ blueprint }: { blueprint: Blueprint })
 
       <div className="border-t border-ops-border-subtle px-3 py-2">
         <Link
-          href={`/demo/login?blueprint=${blueprint.id}`}
+          href={ACCESS_PORTAL}
           onClick={() => setActiveBlueprint(blueprint.id)}
           className="inline-flex min-h-9 w-full items-center justify-between text-[10px] font-semibold text-ops-primary transition hover:text-ops-primary-hover"
         >

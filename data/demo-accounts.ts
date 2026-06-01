@@ -16,9 +16,6 @@
 
 export const DEMO_SANDBOX_PASSWORD = "Demo1234!";
 
-export const DEMO_SANDBOX_LABEL =
-  "Sandbox demo credentials — not production authentication.";
-
 export type DemoAccount = {
   roleLabel: string;
   email: string;
