@@ -26,6 +26,24 @@ export const blueprintGtm: Record<string, BlueprintGtm> = {
     outcome: "Review queue before assets leave the omnibus account.",
     fireblocksRole: "Fireblocks signs and broadcasts approved withdrawals.",
   },
+  "gas-readiness": {
+    buyer: "Treasury operations teams",
+    problem: "Settlements stall or fail when the source vault lacks gas to broadcast.",
+    outcome: "Gas readiness is confirmed before authorization releases a settlement.",
+    fireblocksRole: "Fireblocks reports funding posture and signs once gas is ready.",
+  },
+  "multi-chain-settlement": {
+    buyer: "Treasury & operations teams",
+    problem: "Settling across rails means fragmented authorization and audit trails.",
+    outcome: "One authorization and one audit trail span every rail in the batch.",
+    fireblocksRole: "Fireblocks signs and broadcasts each leg on its own chain.",
+  },
+  "webhook-lifecycle": {
+    buyer: "Treasury operations & engineering",
+    problem: "Teams lose track of settlements between broadcast and confirmation.",
+    outcome: "Webhook events advance each settlement to terminal state automatically.",
+    fireblocksRole: "Fireblocks emits lifecycle webhooks from signing to confirmation.",
+  },
 };
 
 export const demoWalkthrough = [

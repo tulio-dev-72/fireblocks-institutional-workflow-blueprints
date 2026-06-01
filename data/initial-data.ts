@@ -56,6 +56,60 @@ export const blueprintLibrary: Blueprint[] = [
     },
     actionLabel: "Review Settlement Flow",
   },
+  {
+    id: "gas-readiness",
+    title: "Gas Readiness Automation",
+    description:
+      "Treasury Main funding posture gates settlement release — Sepolia ETH gas availability is validated before authorization is permitted.",
+    useCase:
+      "Operations teams prevent stuck settlements by confirming gas readiness on the source vault before Fireblocks signs.",
+    buyer: "Treasury operations",
+    emphasis: ["Funding posture", "Gas readiness", "Pre-authorization validation"],
+    operationalMeta: {
+      settlementRail: "Ethereum (Sepolia)",
+      custodyLayer: "Fireblocks MPC",
+      workflowType: "Funding & Gas Gating",
+      status: "Operational",
+      integration: "Webhook Enabled",
+    },
+    actionLabel: "Review Funding Posture",
+  },
+  {
+    id: "multi-chain-settlement",
+    title: "Multi-Chain Settlement Coordination",
+    description:
+      "Coordinated settlement across multiple rails under one authorization and custody policy — Fireblocks signs each leg per chain.",
+    useCase:
+      "Treasury teams settle a single batch across Ethereum and Polygon with unified governance and one audit trail.",
+    buyer: "Treasury & operations",
+    emphasis: ["Rail selection", "Custody orchestration", "Unified audit trail"],
+    operationalMeta: {
+      settlementRail: "Ethereum + Polygon (testnet)",
+      custodyLayer: "Fireblocks MPC",
+      workflowType: "Cross-Rail Orchestration",
+      status: "Sandbox Ready",
+      integration: "Webhook Enabled",
+    },
+    actionLabel: "Open Cross-Rail Queue",
+  },
+  {
+    id: "webhook-lifecycle",
+    title: "Webhook Lifecycle Orchestration",
+    description:
+      "Event-driven settlement progression from MPC signing through rail confirmation — webhook events advance audit state to terminal completion.",
+    useCase:
+      "Operations teams track every settlement to terminal state automatically from Fireblocks webhook events.",
+    buyer: "Treasury operations & engineering",
+    emphasis: ["Webhook ingestion", "Lifecycle sync", "Terminal completion gating"],
+    operationalMeta: {
+      settlementRail: "Ethereum (Sepolia)",
+      custodyLayer: "Fireblocks MPC",
+      workflowType: "Event-Driven Lifecycle",
+      status: "Operational",
+      integration: "Webhook Enabled",
+    },
+    actionLabel: "Track Settlement Lifecycle",
+  },
 ];
 
 export const defaultPolicy: PolicySettings = {

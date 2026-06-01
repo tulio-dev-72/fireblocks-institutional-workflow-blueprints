@@ -78,6 +78,7 @@ export const INFRASTRUCTURE_STORIES: InfrastructureStory[] = [
     capability: "Funding status · gas readiness · pre-authorization validation",
     tags: ["Treasury Main", "Sepolia", "Funding"],
     status: "Operational",
+    blueprintId: "gas-readiness",
     roles: [
       {
         role: "treasury_manager",
@@ -95,6 +96,7 @@ export const INFRASTRUCTURE_STORIES: InfrastructureStory[] = [
     capability: "Rail selection · custody orchestration · unified audit trail",
     tags: ["Multi-Rail", "Orchestration", "Audit"],
     status: "Sandbox Ready",
+    blueprintId: "multi-chain-settlement",
     roles: [
       { role: "analyst", tier: "primary", action: "Initiates the cross-rail settlement" },
       { role: "treasury_manager", tier: "secondary", action: "Authorizes across rails" },
@@ -109,6 +111,7 @@ export const INFRASTRUCTURE_STORIES: InfrastructureStory[] = [
     capability: "Webhook ingestion · lifecycle sync · terminal completion gating",
     tags: ["Webhooks", "Lifecycle", "Event-Driven"],
     status: "Operational",
+    blueprintId: "webhook-lifecycle",
     roles: [
       {
         role: "treasury_manager",

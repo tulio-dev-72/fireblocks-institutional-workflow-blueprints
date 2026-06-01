@@ -8,7 +8,8 @@ import { FundTreasuryMainPanel } from "@/components/demo/fund-treasury-main-pane
 import { FireblocksSettlementInfrastructure } from "@/components/demo/fireblocks-settlement-infrastructure";
 import { ConnectedWorkflowStepper } from "@/components/demo/connected-workflow-stepper";
 import { Card, InputLabel, PrimaryButton, SectionHeader, TextInput } from "@/components/ui/primitives";
-import { PRIMARY_SETTLEMENT } from "@/data/primary-scenario";
+import { getDemoScenario } from "@/data/demo-scenarios";
+import { PRIMARY_SETTLEMENT, isPrimaryBlueprint } from "@/data/primary-scenario";
 import {
   FUNDING_REQUIRED_BEFORE_AUTHORIZATION,
   SETTLEMENT_RAIL_SEPOLIA,
@@ -21,22 +22,50 @@ import { useAppStore } from "@/lib/store";
 
 export default function CreateTransferPage() {
   const router = useRouter();
-  const { createTransfer, setWorkflowStep, setActiveBlueprint, effectiveRole } = useAppStore();
+  const { createTransfer, setWorkflowStep, effectiveRole, state } = useAppStore();
+  const activeBlueprint = state.activeBlueprint;
   const treasury = useFireblocksTreasury();
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [accessRestriction, setAccessRestriction] = useState<AccessRestrictionDetails | null>(null);
 
-  const settlement = PRIMARY_SETTLEMENT;
-  const connected = treasury.state.integrationStatus === "connected" && Boolean(treasury.state.vault);
-  const settlementAsset =
-    connected && treasury.selectedAsset ? treasury.selectedAsset.assetId : settlement.asset;
-  const settlementAmount = settlement.amount;
+  const isPrimary = isPrimaryBlueprint(activeBlueprint);
+  const scenario = getDemoScenario(activeBlueprint);
+  const scenarioSettlement =
+    scenario.transfers.find((transfer) => transfer.status === "PENDING_APPROVAL") ??
+    scenario.transfers[0] ??
+    null;
+
+  const connected =
+    isPrimary && treasury.state.integrationStatus === "connected" && Boolean(treasury.state.vault);
   const ethAvailable =
     treasury.state.sepoliaEthAvailable ?? treasury.sepoliaEthAsset?.available ?? 0;
   const needsFunding =
-    connected && (treasury.state.fundingStatus === "needs_funding" || ethAvailable <= 0);
-  const settlementRail = treasury.state.settlementRail || SETTLEMENT_RAIL_SEPOLIA;
+    isPrimary && connected && (treasury.state.fundingStatus === "needs_funding" || ethAvailable <= 0);
+
+  // Settlement details: live Fireblocks values for the primary scenario, otherwise
+  // the entered scenario's representative initiation.
+  const settlementAsset = isPrimary
+    ? connected && treasury.selectedAsset
+      ? treasury.selectedAsset.assetId
+      : PRIMARY_SETTLEMENT.asset
+    : scenarioSettlement?.asset ?? PRIMARY_SETTLEMENT.asset;
+  const settlementAmount = isPrimary
+    ? PRIMARY_SETTLEMENT.amount
+    : scenarioSettlement?.amount ?? PRIMARY_SETTLEMENT.amount;
+  const counterparty = isPrimary
+    ? PRIMARY_SETTLEMENT.counterparty
+    : scenarioSettlement?.destinationLabel ?? PRIMARY_SETTLEMENT.counterparty;
+  const destination = isPrimary
+    ? PRIMARY_SETTLEMENT.counterpartyAddress
+    : scenarioSettlement?.destination ?? PRIMARY_SETTLEMENT.counterpartyAddress;
+  const settlementReason = isPrimary
+    ? PRIMARY_SETTLEMENT.reason
+    : scenarioSettlement?.reason ?? PRIMARY_SETTLEMENT.reason;
+  const sourceVaultName = treasury.state.vault?.name ?? PRIMARY_SETTLEMENT.sourceVault;
+  const settlementRail = isPrimary
+    ? treasury.state.settlementRail || SETTLEMENT_RAIL_SEPOLIA
+    : scenarioSettlement?.settlementRail ?? SETTLEMENT_RAIL_SEPOLIA;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -48,18 +77,16 @@ export default function CreateTransferPage() {
       return;
     }
 
-    setActiveBlueprint("stablecoin-payouts");
-
     const result = await createTransfer({
       asset: settlementAsset,
       amount: settlementAmount,
-      destination: settlement.counterpartyAddress,
-      destinationLabel: settlement.counterparty,
-      reason: settlement.reason,
-      sourceVaultId: treasury.state.vault?.id,
-      sourceVault: treasury.state.vault?.name ?? settlement.sourceVault,
+      destination,
+      destinationLabel: counterparty,
+      reason: settlementReason,
+      sourceVaultId: isPrimary ? treasury.state.vault?.id : undefined,
+      sourceVault: isPrimary ? treasury.state.vault?.name ?? PRIMARY_SETTLEMENT.sourceVault : sourceVaultName,
       settlementRail,
-      counterparty: settlement.counterparty,
+      counterparty,
     });
 
     if (!result.ok) {
@@ -73,7 +100,7 @@ export default function CreateTransferPage() {
     setSubmitted(true);
     trackProductEvent("settlement_created", {
       page: "/demo/create",
-      workflow_type: "stablecoin_payouts",
+      workflow_type: activeBlueprint ?? "stablecoin-payouts",
       role: effectiveRole ?? "unknown",
       status: "submitted",
     });
@@ -85,23 +112,41 @@ export default function CreateTransferPage() {
     <>
       <DemoTopBar
         title="Initiate Settlement"
-        subtitle="Treasury Analyst submits Sepolia test settlement for policy evaluation and Fireblocks authorization."
+        subtitle={
+          isPrimary
+            ? "Treasury Analyst submits Sepolia test settlement for policy evaluation and Fireblocks authorization."
+            : `Treasury Analyst initiates the ${scenario.headline.toLowerCase()} for policy evaluation and Fireblocks authorization.`
+        }
       />
       <ConnectedWorkflowStepper />
 
       <main className="ops-page">
         <form onSubmit={handleSubmit} className="space-y-3">
-          <FundTreasuryMainPanel />
-          <FireblocksSettlementInfrastructure treasury={treasury} amount={settlementAmount} />
+          {isPrimary ? (
+            <>
+              <FundTreasuryMainPanel />
+              <FireblocksSettlementInfrastructure treasury={treasury} amount={settlementAmount} />
+            </>
+          ) : (
+            <Card variant="accent">
+              <SectionHeader
+                label="Scenario context"
+                title={scenario.headline}
+                subtitle={scenario.queueSummary}
+              />
+            </Card>
+          )}
 
           <Card variant="elevated">
             <SectionHeader
               label="Settlement request"
               title="Outbound settlement"
               subtitle={
-                connected && treasury.selectedAsset
-                  ? `Available ${formatCurrency(treasury.selectedAsset.available, treasury.selectedAsset.assetId)} in ${treasury.state.vault?.name ?? settlement.sourceVault}`
-                  : "Connect Fireblocks to load Treasury Main balances from the SDK."
+                isPrimary
+                  ? connected && treasury.selectedAsset
+                    ? `Available ${formatCurrency(treasury.selectedAsset.available, treasury.selectedAsset.assetId)} in ${treasury.state.vault?.name ?? PRIMARY_SETTLEMENT.sourceVault}`
+                    : "Connect Fireblocks to load Treasury Main balances from the SDK."
+                  : `Representative settlement on the ${settlementRail} rail — submitted through the same policy and authorization pipeline.`
               }
             />
 
@@ -128,12 +173,12 @@ export default function CreateTransferPage() {
                 <InputLabel htmlFor="sourceVault">Source Vault</InputLabel>
                 <TextInput
                   id="sourceVault"
-                  value={treasury.state.vault?.name ?? settlement.sourceVault}
+                  value={isPrimary ? treasury.state.vault?.name ?? PRIMARY_SETTLEMENT.sourceVault : sourceVaultName}
                   readOnly
                   className="bg-ops-overlay/50"
                 />
               </div>
-              {treasury.state.vault ? (
+              {isPrimary && treasury.state.vault ? (
                 <div>
                   <InputLabel htmlFor="sourceVaultId">Source Vault ID</InputLabel>
                   <TextInput
@@ -146,7 +191,7 @@ export default function CreateTransferPage() {
               ) : null}
               <div>
                 <InputLabel htmlFor="counterparty">Counterparty</InputLabel>
-                <TextInput id="counterparty" value={settlement.counterparty} readOnly className="bg-ops-overlay/50" />
+                <TextInput id="counterparty" value={counterparty} readOnly className="bg-ops-overlay/50" />
               </div>
               <div>
                 <InputLabel htmlFor="rail">Settlement Rail</InputLabel>
@@ -154,7 +199,7 @@ export default function CreateTransferPage() {
               </div>
               <div>
                 <InputLabel htmlFor="reason">Reason</InputLabel>
-                <TextInput id="reason" value={settlement.reason} readOnly className="bg-ops-overlay/50" />
+                <TextInput id="reason" value={settlementReason} readOnly className="bg-ops-overlay/50" />
               </div>
             </div>
           </Card>
