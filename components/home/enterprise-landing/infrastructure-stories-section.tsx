@@ -22,11 +22,13 @@ const roleTierStyles: Record<ScenarioRoleTier, string> = {
 
 type InfrastructureStoriesSectionProps = {
   busyRole: UserRole | null;
+  error?: string | null;
   onEnterRole: (role: UserRole) => void;
 };
 
 export function InfrastructureStoriesSection({
   busyRole,
+  error,
   onEnterRole,
 }: InfrastructureStoriesSectionProps) {
   return (
@@ -37,6 +39,15 @@ export function InfrastructureStoriesSection({
           title="Governed settlement workflows"
           subtitle="Six institutional scenarios demonstrating differentiated operational capability on Fireblocks custody infrastructure. Enter any scenario as one of its roles."
         />
+
+        {error ? (
+          <div
+            role="alert"
+            className="mb-6 rounded-lg border border-ops-danger/30 bg-ops-danger-muted px-4 py-3 text-sm text-ops-danger"
+          >
+            {error}
+          </div>
+        ) : null}
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {INFRASTRUCTURE_STORIES.map((story) => (

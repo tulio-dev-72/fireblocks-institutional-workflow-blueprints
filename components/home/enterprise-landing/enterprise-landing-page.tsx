@@ -10,7 +10,7 @@ import { LandingCommandCenterModal } from "@/components/home/enterprise-landing/
 import { LandingArchitectureModal } from "@/components/home/enterprise-landing/landing-architecture-modal";
 import { LandingHeader } from "@/components/home/enterprise-landing/landing-header";
 import { LandingHero } from "@/components/home/enterprise-landing/landing-hero";
-import { SandboxAccessSection } from "@/components/home/enterprise-landing/sandbox-access-section";
+import { InstitutionalRolesSection } from "@/components/home/enterprise-landing/institutional-roles-section";
 import { prepareSandboxSession, resolveSandboxNavigation } from "@/lib/auth/prepare-sandbox-session";
 import { launchSandboxRole } from "@/lib/auth/sandbox-login";
 import { trackProductEvent } from "@/lib/analytics";
@@ -135,16 +135,17 @@ export function EnterpriseLandingPage() {
 
       <LandingHero
         stats={infrastructure.heroStats}
-        onLaunchSandbox={() => scrollToSection("sandbox-access")}
-        onViewScenarios={() => scrollToSection("settlement-scenarios")}
+        onLaunchSandbox={() => scrollToSection("settlement-scenarios")}
+        onViewRoles={() => scrollToSection("institutional-roles")}
       />
 
       <InfrastructureStoriesSection
         busyRole={busyRole}
+        error={error}
         onEnterRole={(role) => void handleEnterRole(role)}
       />
 
-      <SandboxAccessSection busyRole={busyRole} error={error} onEnterRole={(role) => void handleEnterRole(role)} />
+      <InstitutionalRolesSection />
 
       <LandingArchitectureModal
         open={architectureOpen}
