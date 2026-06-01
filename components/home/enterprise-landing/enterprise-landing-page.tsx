@@ -8,9 +8,9 @@ import { PageLoadingState } from "@/components/ui/page-loading-state";
 import { InfrastructureStoriesSection } from "@/components/home/enterprise-landing/infrastructure-stories-section";
 import { LandingCommandCenterModal } from "@/components/home/enterprise-landing/landing-command-center-modal";
 import { LandingArchitectureModal } from "@/components/home/enterprise-landing/landing-architecture-modal";
+import { LandingRolesModal } from "@/components/home/enterprise-landing/landing-roles-modal";
 import { LandingHeader } from "@/components/home/enterprise-landing/landing-header";
 import { LandingHero } from "@/components/home/enterprise-landing/landing-hero";
-import { InstitutionalRolesSection } from "@/components/home/enterprise-landing/institutional-roles-section";
 import { prepareSandboxSession, resolveSandboxNavigation } from "@/lib/auth/prepare-sandbox-session";
 import { launchSandboxRole } from "@/lib/auth/sandbox-login";
 import { trackProductEvent } from "@/lib/analytics";
@@ -32,6 +32,7 @@ export function EnterpriseLandingPage() {
   const [busyRole, setBusyRole] = useState<UserRole | null>(null);
   const [entering, setEntering] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [rolesOpen, setRolesOpen] = useState(false);
   const [architectureOpen, setArchitectureOpen] = useState(false);
   const [commandCenterOpen, setCommandCenterOpen] = useState(false);
   const statusTracked = useRef(false);
@@ -140,6 +141,7 @@ export function EnterpriseLandingPage() {
               ? "provisioned"
               : "offline"
         }
+        onOpenRoles={() => setRolesOpen(true)}
         onOpenArchitecture={() => setArchitectureOpen(true)}
         onOpenCommandCenter={() => setCommandCenterOpen(true)}
       />
@@ -151,13 +153,13 @@ export function EnterpriseLandingPage() {
         onBrowseScenarios={() => scrollToSection("settlement-scenarios")}
       />
 
-      <InstitutionalRolesSection />
-
       <InfrastructureStoriesSection
         busyRole={busyRole}
         error={error}
         onEnterRole={(role, blueprintId) => void handleEnterRole(role, blueprintId)}
       />
+
+      <LandingRolesModal open={rolesOpen} onClose={() => setRolesOpen(false)} />
 
       <LandingArchitectureModal
         open={architectureOpen}
