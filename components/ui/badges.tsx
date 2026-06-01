@@ -94,19 +94,22 @@ export function LiveBadge({ live }: { live: boolean }) {
 export function IntegrationStatusBadge({
   status,
 }: {
-  status: "connected" | "offline";
+  status: "connected" | "provisioned" | "offline";
 }) {
-  return (
-    <span
-      className={`${badgeBase} ${
-        status === "connected"
-          ? "bg-ops-success-muted text-ops-success ring-1 ring-ops-success/30"
-          : "bg-ops-overlay text-ops-text-secondary ring-1 ring-ops-border"
-      }`}
-    >
-      {status === "connected" ? "Sandbox connected" : "Offline mode"}
-    </span>
-  );
+  const style =
+    status === "connected"
+      ? "bg-ops-success-muted text-ops-success ring-1 ring-ops-success/30"
+      : status === "provisioned"
+        ? "bg-ops-info-muted text-ops-info ring-1 ring-ops-info/30"
+        : "bg-ops-overlay text-ops-text-secondary ring-1 ring-ops-border";
+  const label =
+    status === "connected"
+      ? "Sandbox connected"
+      : status === "provisioned"
+        ? "Sandbox provisioned"
+        : "Offline mode";
+
+  return <span className={`${badgeBase} ${style}`}>{label}</span>;
 }
 
 export function PrototypeModeBadge() {

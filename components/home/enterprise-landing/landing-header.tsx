@@ -3,13 +3,13 @@
 import { IntegrationStatusBadge } from "@/components/ui/badges";
 
 type LandingHeaderProps = {
-  connected: boolean;
+  status: "connected" | "provisioned" | "offline";
   onOpenArchitecture: () => void;
   onOpenCommandCenter: () => void;
 };
 
 export function LandingHeader({
-  connected,
+  status,
   onOpenArchitecture,
   onOpenCommandCenter,
 }: LandingHeaderProps) {
@@ -44,7 +44,7 @@ export function LandingHeader({
           >
             Trusted AI Command Center →
           </button>
-          <IntegrationStatusBadge status={connected ? "connected" : "offline"} />
+          <IntegrationStatusBadge status={status} />
         </div>
       </div>
     </header>

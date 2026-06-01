@@ -14,8 +14,9 @@ export function InstitutionalRolesSection() {
             Segregation of duties across every workflow
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-white/75">
-            Each settlement scenario runs across these three roles — initiation, authorization, and
-            governance. Enter any scenario above as the role you want to operate.
+            App roles map onto the Fireblocks custody boundary. Only the Treasury Manager&apos;s
+            authorization releases a real transaction to Fireblocks for MPC signing — segregation of
+            duties from initiation through settlement.
           </p>
         </div>
 
@@ -23,12 +24,16 @@ export function InstitutionalRolesSection() {
           {SANDBOX_ROLES.map((entry) => (
             <article
               key={entry.role}
-              className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-4 text-left"
+              className="flex flex-col rounded-xl border border-white/10 bg-white/[0.06] px-4 py-4 text-left"
             >
               <h3 className="text-sm font-semibold text-white">{entry.title}</h3>
               <p className="mt-1.5 text-xs leading-relaxed text-white/70">{entry.description}</p>
               <p className="mt-2 text-[10px] uppercase tracking-[0.08em] text-white/45">
                 {entry.responsibility}
+              </p>
+              <p className="mt-3 border-t border-white/10 pt-2.5 text-[11px] leading-relaxed text-white/80">
+                <span className="font-bold uppercase tracking-[0.1em] text-white/55">Fireblocks · </span>
+                {entry.custodyMapping}
               </p>
             </article>
           ))}

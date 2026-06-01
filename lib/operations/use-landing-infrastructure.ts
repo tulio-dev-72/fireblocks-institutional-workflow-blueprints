@@ -67,11 +67,36 @@ export function useLandingInfrastructure() {
     const resolve = (live: boolean): "active" | "provisioned" | "inactive" =>
       live ? "active" : provisioned ? "provisioned" : "inactive";
 
+    // Label reflects the real state — never claim "Connected" while offline/provisioned.
+    const label = (live: boolean, liveLabel: string, provLabel: string, offLabel: string) =>
+      live ? liveLabel : provisioned ? provLabel : offLabel;
+
     return [
-      { id: "fireblocks", label: "Fireblocks Connected", status: resolve(connected) },
-      { id: "webhook", label: "Webhook Stream Active", status: resolve(treasury.webhookEndpointActive) },
-      { id: "mpc", label: "MPC Custody Layer Online", status: resolve(funded) },
-      { id: "treasury", label: "Treasury Main Funded", status: resolve(funded) },
+      {
+        id: "fireblocks",
+        label: label(connected, "Fireblocks Connected", "Fireblocks Provisioned", "Fireblocks Offline"),
+        status: resolve(connected),
+      },
+      {
+        id: "webhook",
+        label: label(
+          treasury.webhookEndpointActive,
+          "Webhook Stream Active",
+          "Webhook Stream Provisioned",
+          "Webhook Stream Offline",
+        ),
+        status: resolve(treasury.webhookEndpointActive),
+      },
+      {
+        id: "mpc",
+        label: label(funded, "MPC Custody Layer Online", "MPC Custody Provisioned", "MPC Custody Offline"),
+        status: resolve(funded),
+      },
+      {
+        id: "treasury",
+        label: label(funded, "Treasury Main Funded", "Treasury Main Provisioned", "Treasury Main Unfunded"),
+        status: resolve(funded),
+      },
     ];
   }, [treasury]);
 

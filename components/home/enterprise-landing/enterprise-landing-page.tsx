@@ -133,7 +133,13 @@ export function EnterpriseLandingPage() {
   return (
     <div className="min-h-screen bg-ops-bg text-ops-text">
       <LandingHeader
-        connected={infrastructure.connected}
+        status={
+          infrastructure.connected
+            ? "connected"
+            : infrastructure.treasury.configured
+              ? "provisioned"
+              : "offline"
+        }
         onOpenArchitecture={() => setArchitectureOpen(true)}
         onOpenCommandCenter={() => setCommandCenterOpen(true)}
       />
@@ -145,13 +151,13 @@ export function EnterpriseLandingPage() {
         onBrowseScenarios={() => scrollToSection("settlement-scenarios")}
       />
 
+      <InstitutionalRolesSection />
+
       <InfrastructureStoriesSection
         busyRole={busyRole}
         error={error}
         onEnterRole={(role, blueprintId) => void handleEnterRole(role, blueprintId)}
       />
-
-      <InstitutionalRolesSection />
 
       <LandingArchitectureModal
         open={architectureOpen}
