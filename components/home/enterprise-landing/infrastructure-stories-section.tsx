@@ -56,16 +56,17 @@ export function InfrastructureStoriesSection({
                   </span>
                 ))}
               </div>
-
-              <GhostButton
-                type="button"
-                className="mt-5 w-full"
-                onClick={onExploreWorkflow}
-              >
-                Explore Workflow
-              </GhostButton>
             </article>
           ))}
+        </div>
+
+        <div className="mt-10 flex flex-col items-center gap-2 text-center">
+          <p className="text-sm text-ops-text-secondary">
+            Run the live stablecoin settlement workflow end-to-end in the sandbox.
+          </p>
+          <GhostButton type="button" className="px-6" onClick={onExploreWorkflow}>
+            Launch the operational sandbox →
+          </GhostButton>
         </div>
       </div>
     </section>
