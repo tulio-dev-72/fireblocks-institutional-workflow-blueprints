@@ -12,7 +12,7 @@ export type SandboxRoleDefinition = {
 export const ACCESS_PORTAL_TITLE = "Treasury Control Center";
 
 export const ACCESS_PORTAL_SUBTITLE =
-  "AI-enhanced operational governance for institutional stablecoin settlement workflows powered by Fireblocks infrastructure.";
+  "Operational governance for institutional stablecoin settlement workflows, powered by Fireblocks infrastructure.";
 
 export const SANDBOX_FOOTER_NOTE =
   "Sandbox environment using Fireblocks test infrastructure and test settlement assets.";

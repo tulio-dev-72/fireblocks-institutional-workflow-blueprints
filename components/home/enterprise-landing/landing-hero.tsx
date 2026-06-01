@@ -52,8 +52,8 @@ export function LandingHero({ stats, onLaunchSandbox, onExploreStories }: Landin
             Treasury Control Center
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-ops-text-secondary sm:text-lg sm:leading-relaxed">
-            AI-enhanced operational governance for institutional stablecoin settlement workflows
-            powered by Fireblocks infrastructure.
+            Operational governance for institutional stablecoin settlement workflows — policy-driven
+            authorization, MPC custody, and on-chain settlement powered by Fireblocks infrastructure.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
