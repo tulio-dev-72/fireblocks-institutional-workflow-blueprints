@@ -43,8 +43,19 @@ export default function DemoDashboardPage() {
         <UseCaseContextCard />
 
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-          <StatTile label="Pending authorization" value={pendingPayouts.length} accent />
-          <StatTile label="Settled" value={clearedToday.length} />
+          <StatTile
+            label="Pending authorization"
+            value={pendingPayouts.length}
+            accent
+            hintLabel="What is Pending authorization?"
+            hint="Settlements held in the queue awaiting a Treasury Manager's release. Nothing here has crossed the Fireblocks custody boundary yet."
+          />
+          <StatTile
+            label="Settled"
+            value={clearedToday.length}
+            hintLabel="What is Settled?"
+            hint="Settlements that have been authorized and released (APPROVED or SETTLED) — past the custody boundary and recorded in the audit trail."
+          />
         </div>
 
         <section>

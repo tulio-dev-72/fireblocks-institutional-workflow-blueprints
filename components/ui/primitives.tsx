@@ -197,16 +197,26 @@ export function StatTile({
   label,
   value,
   accent = false,
+  hint,
+  hintLabel,
 }: {
   label: string;
   value: string | number;
   accent?: boolean;
+  /** Optional explanatory tooltip rendered as an info icon beside the label. */
+  hint?: ReactNode;
+  hintLabel?: string;
 }) {
   return (
     <div className="rounded-xl border border-ops-border bg-ops-surface px-4 py-4 shadow-[var(--ops-shadow-sm)] ring-1 ring-ops-primary/[0.05]">
-      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-ops-text-dim">
-        {label}
-      </p>
+      <div className="flex items-center gap-1.5">
+        <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-ops-text-dim">
+          {label}
+        </p>
+        {hint ? (
+          <InfoTooltip label={hintLabel ?? `About ${label}`} content={hint} side="bottom" />
+        ) : null}
+      </div>
       <p
         className={`mt-1.5 text-2xl font-semibold tabular-nums tracking-tight ${accent ? "text-ops-accent" : "text-ops-text"}`}
       >
