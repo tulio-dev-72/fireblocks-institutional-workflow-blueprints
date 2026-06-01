@@ -11,10 +11,14 @@ type SandboxStoreActions = {
   setWorkflowStep: (step: ReturnType<typeof getRoleWorkflowStep>) => void;
 };
 
-export function prepareSandboxSession(role: UserRole, actions: SandboxStoreActions): void {
+export function prepareSandboxSession(
+  role: UserRole,
+  actions: SandboxStoreActions,
+  blueprintId?: string | null,
+): void {
   commitDemoLogin(role);
   actions.setRole(role);
-  actions.setActiveBlueprint(PRIMARY_BLUEPRINT_ID);
+  actions.setActiveBlueprint(blueprintId ?? PRIMARY_BLUEPRINT_ID);
   actions.setWorkflowStep(getRoleWorkflowStep(role));
 }
 

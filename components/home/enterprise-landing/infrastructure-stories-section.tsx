@@ -23,7 +23,7 @@ const roleTierStyles: Record<ScenarioRoleTier, string> = {
 type InfrastructureStoriesSectionProps = {
   busyRole: UserRole | null;
   error?: string | null;
-  onEnterRole: (role: UserRole) => void;
+  onEnterRole: (role: UserRole, blueprintId?: string | null) => void;
 };
 
 export function InfrastructureStoriesSection({
@@ -99,7 +99,7 @@ export function InfrastructureStoriesSection({
                         key={`${story.id}-${scenarioRole.role}`}
                         type="button"
                         disabled={isDisabled}
-                        onClick={() => onEnterRole(scenarioRole.role)}
+                        onClick={() => onEnterRole(scenarioRole.role, story.blueprintId)}
                         title={`${getRoleLabel(scenarioRole.role)} — ${scenarioRole.action}`}
                         aria-label={`Enter ${story.title} as ${getRoleLabel(scenarioRole.role)} (${scenarioRole.tier} role): ${scenarioRole.action}`}
                         className={`inline-flex min-h-9 items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-60 ${roleTierStyles[scenarioRole.tier]}`}

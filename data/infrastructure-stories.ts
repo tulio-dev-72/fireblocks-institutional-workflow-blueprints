@@ -64,6 +64,7 @@ export const INFRASTRUCTURE_STORIES: InfrastructureStory[] = [
     capability: "Dual-control workflow · vault discovery · governed rebalancing",
     tags: ["Treasury", "Dual Control", "Vault Accounts"],
     status: "Sandbox Ready",
+    blueprintId: "treasury-approval",
     roles: [
       { role: "analyst", tier: "primary", action: "Proposes the vault-to-vault movement" },
       { role: "treasury_manager", tier: "secondary", action: "Authorizes the rebalance" },

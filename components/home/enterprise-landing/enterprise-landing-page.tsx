@@ -59,7 +59,7 @@ export function EnterpriseLandingPage() {
   }, [loading, sessionReady, effectiveRole, busyRole, entering, requestedNext, router]);
 
   const handleEnterRole = useCallback(
-    async (role: UserRole) => {
+    async (role: UserRole, blueprintId?: string | null) => {
       setBusyRole(role);
       setEntering(true);
       setError(null);
@@ -80,13 +80,18 @@ export function EnterpriseLandingPage() {
           page: "/",
           role: result.role,
           workflow_type: "sandbox_access",
+          blueprint_id: blueprintId ?? null,
         });
 
-        prepareSandboxSession(result.role, {
-          setRole,
-          setActiveBlueprint,
-          setWorkflowStep,
-        });
+        prepareSandboxSession(
+          result.role,
+          {
+            setRole,
+            setActiveBlueprint,
+            setWorkflowStep,
+          },
+          blueprintId,
+        );
 
         // Keep the "signing in as {role}" screen visible long enough to read.
         await new Promise((resolve) => setTimeout(resolve, 1200));
@@ -142,7 +147,7 @@ export function EnterpriseLandingPage() {
       <InfrastructureStoriesSection
         busyRole={busyRole}
         error={error}
-        onEnterRole={(role) => void handleEnterRole(role)}
+        onEnterRole={(role, blueprintId) => void handleEnterRole(role, blueprintId)}
       />
 
       <InstitutionalRolesSection />
