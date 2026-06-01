@@ -36,6 +36,21 @@ export function TransferCard({ transfer }: { transfer: Transfer }) {
         <span className="inline-flex items-center rounded-md bg-ops-overlay px-1.5 py-0.5 font-mono text-[10px] font-semibold text-ops-text-secondary ring-1 ring-ops-border">
           {transfer.asset}
         </span>
+        {transfer.seeded ? (
+          <span
+            className="inline-flex items-center rounded-md bg-ops-overlay px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-ops-text-dim ring-1 ring-ops-border-subtle"
+            title="Pre-populated demo data illustrating the workflow — not a live Fireblocks transaction."
+          >
+            Seeded
+          </span>
+        ) : (
+          <span
+            className="inline-flex items-center rounded-md bg-ops-success-muted px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-ops-success ring-1 ring-ops-success/25"
+            title="Initiated in this session — submitted to Fireblocks as a real transaction."
+          >
+            Live
+          </span>
+        )}
       </div>
 
       <div className="mt-3 space-y-1.5 border-t border-ops-border pt-3 text-sm text-ops-text-secondary">

@@ -38,6 +38,8 @@ export type Transfer = {
   fireblocksTxId?: string;
   /** Webhook-driven lifecycle status from Fireblocks. */
   fireblocksStatus?: string;
+  /** True for pre-populated demo data illustrating the workflow; false/undefined for settlements initiated live in-session. */
+  seeded?: boolean;
   createdAt: string;
   updatedAt: string;
 };
