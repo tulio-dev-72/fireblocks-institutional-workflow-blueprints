@@ -38,6 +38,8 @@ export function OperationalInfrastructurePanel({
             label="Infrastructure"
             title="Custody and settlement rail status"
             subtitle="Live Fireblocks SDK signals for Treasury Main, MPC custody, webhooks, and Ethereum Sepolia."
+            titleHintLabel="What does this panel show?"
+            titleHint="The real-time health of the plumbing a settlement depends on, read live from Fireblocks: API connectivity, Treasury Main funding, the MPC custody/signing layer, the webhook event stream, and the Sepolia rail. Each signal must be green for an authorized settlement to actually sign and broadcast."
           />
         </div>
         <LiveBadge live={fireblocksConnected} />
