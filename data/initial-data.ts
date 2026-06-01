@@ -78,13 +78,13 @@ export const blueprintLibrary: Blueprint[] = [
     id: "multi-chain-settlement",
     title: "Multi-Chain Settlement Coordination",
     description:
-      "Coordinated settlement across multiple rails under one authorization and custody policy — Fireblocks signs each leg per chain.",
+      "Coordinated batch settlement under one authorization and custody policy — Fireblocks signs each leg. In production the legs span Ethereum and Polygon; this sandbox settles each leg on Ethereum Sepolia.",
     useCase:
-      "Treasury teams settle a single batch across Ethereum and Polygon with unified governance and one audit trail.",
+      "Treasury teams settle a single multi-leg batch with unified governance and one audit trail.",
     buyer: "Treasury & operations",
     emphasis: ["Rail selection", "Custody orchestration", "Unified audit trail"],
     operationalMeta: {
-      settlementRail: "Ethereum + Polygon (testnet)",
+      settlementRail: "Ethereum Sepolia (testnet)",
       custodyLayer: "Fireblocks MPC",
       workflowType: "Cross-Rail Orchestration",
       status: "Sandbox Ready",

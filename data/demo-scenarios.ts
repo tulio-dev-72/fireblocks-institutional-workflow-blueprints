@@ -443,8 +443,8 @@ const multiChainScenario: DemoScenario = {
   blueprintId: "multi-chain-settlement",
   headline: "Cross-rail settlement batch — unified authorization",
   queueSummary:
-    "A coordinated settlement spans multiple rails. Each leg shares one authorization and custody policy; the manager releases the batch and Fireblocks signs per rail.",
-  batchLabel: "2 rails pending · 1 leg settled",
+    "A coordinated batch settlement. Each leg shares one authorization and custody policy; the manager releases the batch and Fireblocks signs per leg. In production the legs span Ethereum and Polygon — this sandbox settles each leg on Ethereum Sepolia.",
+  batchLabel: "2 legs pending · 1 leg settled",
   transfers: [
     {
       id: "TRX-DEMO-001",
@@ -466,12 +466,12 @@ const multiChainScenario: DemoScenario = {
     },
     {
       id: "TRX-DEMO-002",
-      asset: "AMOY_POLYGON_TEST",
-      amount: 12.5,
+      asset: "ETH_TEST5",
+      amount: 0.014,
       destination: destinationPresets[1].address,
-      destinationLabel: "Counterparty — Polygon leg",
-      reason: "Multi-chain settlement — Polygon Amoy leg",
-      settlementRail: "Polygon Amoy",
+      destinationLabel: "Counterparty — second leg",
+      reason: "Multi-chain settlement — second leg (Sepolia in sandbox)",
+      settlementRail: "Ethereum Sepolia",
       policyTrigger: "Cross-rail batch authorization",
       requiredApprover: "Treasury Manager",
       status: "PENDING_APPROVAL",
@@ -523,7 +523,7 @@ const multiChainScenario: DemoScenario = {
       actor: "Analyst",
       role: "analyst",
       timestamp: t2,
-      details: "TRX-DEMO-001 / TRX-DEMO-002 initiated across Ethereum Sepolia and Polygon Amoy.",
+      details: "TRX-DEMO-001 / TRX-DEMO-002 initiated as a cross-rail batch (settled on Ethereum Sepolia in this sandbox).",
     },
     {
       id: "AUD-MC-004",
@@ -547,7 +547,7 @@ const multiChainScenario: DemoScenario = {
     {
       step: 1,
       title: "Cross-rail settlement view",
-      detail: "One batch, multiple rails — see Ethereum and Polygon legs in a single queue.",
+      detail: "One batch, multiple legs — see every leg under a single authorization queue.",
       href: "/demo",
     },
     {
@@ -558,14 +558,14 @@ const multiChainScenario: DemoScenario = {
     },
     {
       step: 3,
-      title: "Fireblocks signs per rail",
-      detail: "On approval, Fireblocks signs and broadcasts each leg on its own rail.",
+      title: "Fireblocks signs each leg",
+      detail: "On approval, Fireblocks signs and broadcasts each leg under one custody policy.",
       href: "/demo/approvals",
     },
     {
       step: 4,
       title: "Unified audit trail",
-      detail: "Every rail’s lifecycle rolls up into one settlement audit record.",
+      detail: "Every leg’s lifecycle rolls up into one settlement audit record.",
       href: "/demo/audit",
     },
   ],

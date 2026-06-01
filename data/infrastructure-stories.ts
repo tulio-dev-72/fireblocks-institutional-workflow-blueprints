@@ -108,7 +108,7 @@ export const INFRASTRUCTURE_STORIES: InfrastructureStory[] = [
     status: "Sandbox Ready",
     blueprintId: "multi-chain-settlement",
     workflowHint:
-      "A single settlement batch spans multiple rails (Ethereum Sepolia + Polygon Amoy) under one authorization and custody policy. On approval, Fireblocks signs and broadcasts each leg on its own rail, rolling up into one unified audit trail.",
+      "A single settlement batch coordinates multiple legs under one authorization and custody policy. On approval, Fireblocks signs and broadcasts each leg, rolling up into one unified audit trail. In production the legs span Ethereum and Polygon; this sandbox settles each leg live on Ethereum Sepolia.",
     roles: [
       { role: "analyst", tier: "primary", action: "Initiates the cross-rail settlement" },
       { role: "treasury_manager", tier: "secondary", action: "Authorizes across rails" },
