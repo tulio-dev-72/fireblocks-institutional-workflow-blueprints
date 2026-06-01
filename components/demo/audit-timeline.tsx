@@ -32,9 +32,26 @@ export function AuditTimeline({ events }: { events: AuditEvent[] }) {
             {event.details ? (
               <p className="mt-1 text-xs leading-relaxed text-ops-text-secondary">{event.details}</p>
             ) : null}
-            <p className="mt-2 text-[10px] font-medium text-ops-text-dim">
-              {event.actor}
-              {!isInfrastructure ? ` · ${getRoleLabel(event.role)}` : null}
+            <p className="mt-2 flex flex-wrap items-center gap-1.5 text-[10px] font-medium text-ops-text-dim">
+              <span>
+                {event.actor}
+                {!isInfrastructure ? ` · ${getRoleLabel(event.role)}` : null}
+              </span>
+              {event.seeded ? (
+                <span
+                  className="inline-flex items-center rounded bg-ops-overlay px-1 py-0.5 text-[9px] font-semibold uppercase tracking-[0.08em] text-ops-text-dim ring-1 ring-ops-border-subtle"
+                  title="Pre-populated demo event illustrating the workflow — not recorded from a live action."
+                >
+                  Seeded
+                </span>
+              ) : (
+                <span
+                  className="inline-flex items-center rounded bg-ops-success-muted px-1 py-0.5 text-[9px] font-semibold uppercase tracking-[0.08em] text-ops-success ring-1 ring-ops-success/25"
+                  title="Recorded live from an action taken in this session."
+                >
+                  Live
+                </span>
+              )}
             </p>
           </div>
         );

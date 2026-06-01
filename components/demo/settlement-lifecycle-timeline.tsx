@@ -53,6 +53,8 @@ export function SettlementLifecycleTimeline({
             ? `Tracking ${focusTransfer.id} through governed custody and settlement rail confirmation.`
             : "Horizontal lifecycle reference for workflow orchestration through MPC custody to completion."
         }
+        titleHintLabel="How to read this"
+        titleHint="Two things are shown on one row. The colored rings trace the journey of a single settlement — the one named in “Active settlement” below — so when it's completed, every stage it passed shows a green check. The small number under a stage counts how many settlements across the whole queue currently sit at that stage (e.g. 6 awaiting authorization, 1 completed)."
       />
 
       <div className="overflow-x-auto pb-1">

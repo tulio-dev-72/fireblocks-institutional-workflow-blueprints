@@ -731,7 +731,7 @@ export function applyDemoScenario(
   const scenario = getDemoScenario(blueprintId);
   return {
     transfers: scenario.transfers.map((transfer) => ({ ...transfer, seeded: true })),
-    auditLog: scenario.auditLog,
+    auditLog: scenario.auditLog.map((event) => ({ ...event, seeded: true })),
     vaultBalances: scenario.vaultBalances,
   };
 }

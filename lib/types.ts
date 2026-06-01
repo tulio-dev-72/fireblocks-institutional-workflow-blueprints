@@ -52,6 +52,8 @@ export type AuditEvent = {
   role: UserRole;
   timestamp: string;
   details: string;
+  /** True for pre-populated demo events; false/undefined for events recorded live in-session. */
+  seeded?: boolean;
 };
 
 /** App-side policy rules — complements Fireblocks TAP at custody layer. */
