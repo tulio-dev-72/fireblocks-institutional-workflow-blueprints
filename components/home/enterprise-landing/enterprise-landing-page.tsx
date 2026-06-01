@@ -6,7 +6,7 @@ import { useAuth } from "@/components/auth/auth-provider";
 import { PageLoadingState } from "@/components/ui/page-loading-state";
 import { InfrastructureStoriesSection } from "@/components/home/enterprise-landing/infrastructure-stories-section";
 import { LandingAiIntelligence } from "@/components/home/enterprise-landing/landing-ai-intelligence";
-import { LandingArchitectureSection } from "@/components/home/enterprise-landing/landing-architecture-section";
+import { LandingArchitectureModal } from "@/components/home/enterprise-landing/landing-architecture-modal";
 import { LandingHeader } from "@/components/home/enterprise-landing/landing-header";
 import { LandingHero } from "@/components/home/enterprise-landing/landing-hero";
 import { LiveOperationsPreview } from "@/components/home/enterprise-landing/live-operations-preview";
@@ -32,6 +32,7 @@ export function EnterpriseLandingPage() {
   const [busyRole, setBusyRole] = useState<UserRole | null>(null);
   const [entering, setEntering] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [architectureOpen, setArchitectureOpen] = useState(false);
   const statusTracked = useRef(false);
 
   useEffect(() => {
@@ -118,7 +119,10 @@ export function EnterpriseLandingPage() {
 
   return (
     <div className="min-h-screen bg-ops-bg text-ops-text">
-      <LandingHeader connected={infrastructure.connected} />
+      <LandingHeader
+        connected={infrastructure.connected}
+        onOpenArchitecture={() => setArchitectureOpen(true)}
+      />
 
       <LandingHero
         stats={infrastructure.heroStats}
@@ -136,9 +140,13 @@ export function EnterpriseLandingPage() {
 
       <LandingAiIntelligence insights={infrastructure.preview.insights} />
 
-      <LandingArchitectureSection fireblocksConnected={infrastructure.connected} />
-
       <SandboxAccessSection busyRole={busyRole} error={error} onEnterRole={(role) => void handleEnterRole(role)} />
+
+      <LandingArchitectureModal
+        open={architectureOpen}
+        fireblocksConnected={infrastructure.connected}
+        onClose={() => setArchitectureOpen(false)}
+      />
     </div>
   );
 }
