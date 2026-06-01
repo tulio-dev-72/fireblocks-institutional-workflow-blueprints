@@ -1,11 +1,14 @@
 import type { UserRole } from "@/lib/types";
 import type { WorkflowStepId } from "@/lib/workflow";
 
-/** Existing demo routes — verified in app/demo/** */
+/**
+ * Every role lands on the Operations dashboard first for orientation, then
+ * navigates to their task via the bottom nav (Initiate / Authorize / etc.).
+ */
 export const ROLE_DESTINATIONS: Record<UserRole, string> = {
-  analyst: "/demo/create",
-  treasury_manager: "/demo/approvals",
-  admin: "/demo/settings",
+  analyst: "/demo",
+  treasury_manager: "/demo",
+  admin: "/demo",
 };
 
 export const ROLE_WORKFLOW_STEPS: Record<UserRole, WorkflowStepId> = {

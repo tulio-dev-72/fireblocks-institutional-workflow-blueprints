@@ -47,6 +47,8 @@ export function AiOperationalIntelligencePanel({
         label="Operational intelligence"
         title="AI operational briefing"
         subtitle="Rule-based summaries from live workflow, policy, infrastructure, and webhook evidence — no speculative analytics."
+        titleHintLabel="Is this real AI?"
+        titleHint="No language model is involved. These briefings are produced by deterministic rules that read the live workflow state — pending queue, risk level, Fireblocks connectivity, webhook delivery stats, and the active settlement's lifecycle — and describe it in plain language. The evidence is real; the summaries are generated logic, not predictions."
       />
 
       <div className="space-y-2">
