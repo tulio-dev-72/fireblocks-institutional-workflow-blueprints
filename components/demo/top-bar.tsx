@@ -1,9 +1,11 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { RoleBadge, LiveBadge } from "@/components/ui/badges";
 import { InfoTooltip } from "@/components/ui/info-tooltip";
+import { RoleSwitcherModal } from "@/components/demo/role-switcher-modal";
 import { useAuth } from "@/components/auth/auth-provider";
 import { exitSandboxSession } from "@/lib/auth/exit-sandbox-session";
 import { useFireblocksConnection } from "@/lib/fireblocks/use-fireblocks-connection";
@@ -28,15 +30,7 @@ export function DemoTopBar({
   const { connected } = useFireblocksConnection();
   const displayRole = sessionReady ? effectiveRole : null;
   const displayName = sessionReady ? actorName : "Loading…";
-
-  async function handleSwitchRole() {
-    await exitSandboxSession({
-      clearRole,
-      signOut: isSupabaseAuth ? signOut : undefined,
-      router,
-      endSession: isSupabaseAuth,
-    });
-  }
+  const [switcherOpen, setSwitcherOpen] = useState(false);
 
   async function handleEndSession() {
     await exitSandboxSession({
@@ -80,7 +74,7 @@ export function DemoTopBar({
           <div className="flex gap-3 sm:flex-col sm:gap-1">
             <button
               type="button"
-              onClick={() => void handleSwitchRole()}
+              onClick={() => setSwitcherOpen(true)}
               className="inline-flex min-h-11 items-center text-[11px] font-medium text-ops-text-secondary hover:text-ops-primary"
             >
               Switch role
@@ -95,6 +89,7 @@ export function DemoTopBar({
           </div>
         </div>
       </div>
+      <RoleSwitcherModal open={switcherOpen} onClose={() => setSwitcherOpen(false)} />
     </header>
   );
 }
