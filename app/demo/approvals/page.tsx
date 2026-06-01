@@ -3,6 +3,7 @@
 import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ActionAccessRestricted } from "@/components/demo/action-access-restricted";
+import { AiTransactionSummary } from "@/components/demo/ai-transaction-summary";
 import { AuthorizationDebugPanel } from "@/components/demo/authorization-debug-panel";
 import { DemoTopBar } from "@/components/demo/top-bar";
 import { MpcCustodyBoundaryPanel } from "@/components/demo/mpc-custody-boundary-panel";
@@ -267,6 +268,7 @@ export default function ApprovalsPage() {
                 {pending.map((transfer) => (
                   <div key={transfer.id} className="space-y-2">
                     <SettlementReviewCard transfer={transfer} />
+                    <AiTransactionSummary transfer={transfer} policy={state.policy} />
                     {escalatedId === transfer.id ? (
                       <Card variant="ghost">
                         <p className="text-xs text-ops-warning">
