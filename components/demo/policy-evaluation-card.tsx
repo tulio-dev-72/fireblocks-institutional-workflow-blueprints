@@ -26,6 +26,8 @@ export function PolicyEvaluationCard({ transfer }: { transfer: Transfer }) {
         label="Policy engine"
         title="Operational evaluation"
         subtitle="Institutional treasury governance assessment before authorization release."
+        titleHintLabel="What does this evaluation do?"
+        titleHint="This is the application's pre-authorization check: it inspects the amount, counterparty, rail, and risk to decide whether the settlement can auto-release or must be routed for manager authorization. The enforced, non-bypassable rules live in the Fireblocks Transaction Authorization Policy shown below — this panel mirrors that intent at the workflow layer."
       />
       <div className="mb-3 flex flex-wrap gap-1.5">
         <StatusBadge status={transfer.status} />

@@ -208,6 +208,8 @@ export function FireblocksSettlementPanel({
                 ? "Status updates from Fireblocks webhooks and API polling — COMPLETED only when custody confirms."
                 : "Demo Mode fallback — simulated custody progression without a live Fireblocks transaction."
             }
+            titleHintLabel="How does the lifecycle update?"
+            titleHint="Fireblocks reports a transaction's status (e.g. SUBMITTED, BROADCASTING, CONFIRMING, COMPLETED) and a finer sub-status as it moves through signing and on-chain confirmation. Those transitions are pushed to this app as webhook events, so the timeline reflects real custody state — it only reads COMPLETED once the network confirms."
           />
           <LifecycleModeBanner lifecycleMode={lifecycleMode} statusSource={statusSource} />
           <WebhookLifecycleStepper webhookStatuses={webhookStatuses} />

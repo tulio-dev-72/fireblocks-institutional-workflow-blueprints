@@ -67,6 +67,8 @@ export function LiveTapPolicyPanel() {
         label="Fireblocks · Transaction Authorization Policy"
         title="Governing policy (live workspace)"
         subtitle={FIREBLOCKS_TAP_POLICY_META.enforcement}
+        titleHintLabel="What is the Transaction Authorization Policy?"
+        titleHint="Fireblocks' Transaction Authorization Policy (TAP) is a rule engine that evaluates every transaction — by initiator, source, destination, asset, and amount — and decides to allow, block, or require approval before it can be signed. It is enforced at the MPC custody layer, so it cannot be bypassed by the application."
       />
 
       <div className="space-y-2">

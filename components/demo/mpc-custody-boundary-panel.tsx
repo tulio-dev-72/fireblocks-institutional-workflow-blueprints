@@ -15,6 +15,8 @@ export function MpcCustodyBoundaryPanel({ compact = false }: { compact?: boolean
         label="Custody / signing boundary"
         title="MPC Custody Boundary"
         subtitle="This app orchestrates enterprise workflow around the Fireblocks custody layer — it does not implement MPC itself."
+        titleHintLabel="What is MPC custody?"
+        titleHint="Multi-Party Computation (MPC) splits a wallet's signing key into shares held by separate parties, so no single person or server ever holds a complete private key. A transaction can only be signed when the required shares cooperate — which is why an approval here, not a key on this server, is what releases funds."
       />
 
       <ul className="space-y-2">

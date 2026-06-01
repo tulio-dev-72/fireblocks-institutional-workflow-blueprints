@@ -73,6 +73,8 @@ export function PolicyExecutionTimeline({ transfer }: { transfer: Transfer }) {
         label="Fireblocks · Policy execution"
         title="Live event stream"
         subtitle="Each entry is a real event Fireblocks delivered as it evaluated this transaction against the policy above and signed via MPC."
+        titleHintLabel="What am I looking at?"
+        titleHint="These are the actual webhook events Fireblocks sent for this transaction. Each carries a status and a finer sub-status (the precise stage within signing or confirmation), plus a signature flag showing the webhook payload was cryptographically verified as genuinely from Fireblocks."
       />
 
       {transfer.fireblocksTxId ? (

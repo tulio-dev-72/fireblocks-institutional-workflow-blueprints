@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { InfoTooltip } from "@/components/ui/info-tooltip";
 
 export type CardVariant = "surface" | "elevated" | "accent" | "ghost";
 
@@ -40,11 +41,16 @@ export function SectionHeader({
   subtitle,
   action,
   label,
+  titleHint,
+  titleHintLabel,
 }: {
   title: string;
   subtitle?: string;
   action?: ReactNode;
   label?: string;
+  /** Optional explanatory tooltip rendered as an info icon beside the title. */
+  titleHint?: ReactNode;
+  titleHintLabel?: string;
 }) {
   return (
     <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
@@ -54,11 +60,14 @@ export function SectionHeader({
             {label}
           </p>
         ) : null}
-        <h2
-          className={`font-semibold tracking-tight text-ops-text ${label ? "mt-1.5" : ""} text-lg leading-snug`}
-        >
-          {title}
-        </h2>
+        <div className={`flex items-center gap-1.5 ${label ? "mt-1.5" : ""}`}>
+          <h2 className="font-semibold tracking-tight text-ops-text text-lg leading-snug">
+            {title}
+          </h2>
+          {titleHint ? (
+            <InfoTooltip label={titleHintLabel ?? `More about ${title}`} content={titleHint} />
+          ) : null}
+        </div>
         {subtitle ? (
           <p className="mt-2 text-sm leading-relaxed text-ops-text-secondary">{subtitle}</p>
         ) : null}
@@ -131,17 +140,25 @@ export function DangerButton({
 export function InputLabel({
   htmlFor,
   children,
+  hint,
+  hintLabel,
 }: {
   htmlFor: string;
   children: ReactNode;
+  /** Optional explanatory tooltip rendered as an info icon beside the label. */
+  hint?: ReactNode;
+  hintLabel?: string;
 }) {
   return (
-    <label
-      htmlFor={htmlFor}
-      className="mb-2 block text-[11px] font-bold uppercase tracking-[0.14em] text-ops-text-dim"
-    >
-      {children}
-    </label>
+    <div className="mb-2 flex items-center gap-1.5">
+      <label
+        htmlFor={htmlFor}
+        className="block text-[11px] font-bold uppercase tracking-[0.14em] text-ops-text-dim"
+      >
+        {children}
+      </label>
+      {hint ? <InfoTooltip label={hintLabel ?? "More information"} content={hint} /> : null}
+    </div>
   );
 }
 

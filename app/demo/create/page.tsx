@@ -152,7 +152,13 @@ export default function CreateTransferPage() {
 
             <div className="space-y-4">
               <div>
-                <InputLabel htmlFor="asset">Asset (Fireblocks assetId)</InputLabel>
+                <InputLabel
+                  htmlFor="asset"
+                  hintLabel="About the settlement asset"
+                  hint="Fireblocks identifies every asset by an assetId. This demo settles Sepolia test ETH (ETH_TEST5) — the identical policy evaluation and MPC custody pipeline governs USDC stablecoin payouts in production."
+                >
+                  Asset (Fireblocks assetId)
+                </InputLabel>
                 <TextInput
                   id="asset"
                   value={settlementAsset}
@@ -170,7 +176,13 @@ export default function CreateTransferPage() {
                 />
               </div>
               <div>
-                <InputLabel htmlFor="sourceVault">Source Vault</InputLabel>
+                <InputLabel
+                  htmlFor="sourceVault"
+                  hintLabel="About the source vault"
+                  hint="A Fireblocks vault account where assets are held in MPC custody. Funds can only leave after the transaction is authorized and signed — no single person holds a private key."
+                >
+                  Source Vault
+                </InputLabel>
                 <TextInput
                   id="sourceVault"
                   value={isPrimary ? treasury.state.vault?.name ?? PRIMARY_SETTLEMENT.sourceVault : sourceVaultName}
@@ -180,7 +192,13 @@ export default function CreateTransferPage() {
               </div>
               {isPrimary && treasury.state.vault ? (
                 <div>
-                  <InputLabel htmlFor="sourceVaultId">Source Vault ID</InputLabel>
+                  <InputLabel
+                    htmlFor="sourceVaultId"
+                    hintLabel="About the vault ID"
+                    hint="The Fireblocks internal identifier for this vault account, used by the API to scope the transaction to the correct custody source."
+                  >
+                    Source Vault ID
+                  </InputLabel>
                   <TextInput
                     id="sourceVaultId"
                     value={treasury.state.vault.id}
@@ -190,11 +208,23 @@ export default function CreateTransferPage() {
                 </div>
               ) : null}
               <div>
-                <InputLabel htmlFor="counterparty">Counterparty</InputLabel>
+                <InputLabel
+                  htmlFor="counterparty"
+                  hintLabel="About the counterparty"
+                  hint="The destination this settlement pays out to. A destination that isn't on the approved allowlist triggers policy review before any release."
+                >
+                  Counterparty
+                </InputLabel>
                 <TextInput id="counterparty" value={counterparty} readOnly className="bg-ops-overlay/50" />
               </div>
               <div>
-                <InputLabel htmlFor="rail">Settlement Rail</InputLabel>
+                <InputLabel
+                  htmlFor="rail"
+                  hintLabel="About the settlement rail"
+                  hint="The blockchain network the transaction is signed for and broadcast on. This demo uses the Ethereum Sepolia testnet."
+                >
+                  Settlement Rail
+                </InputLabel>
                 <TextInput id="rail" value={settlementRail} readOnly className="bg-ops-overlay/50" />
               </div>
               <div>
