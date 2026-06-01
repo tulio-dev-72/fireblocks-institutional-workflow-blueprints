@@ -1,6 +1,7 @@
 "use client";
 
 import { SectionHeader } from "@/components/ui/primitives";
+import { InfoTooltip } from "@/components/ui/info-tooltip";
 import { INFRASTRUCTURE_STORIES, type ScenarioRoleTier } from "@/data/infrastructure-stories";
 import { getRoleLabel, getRoleShortLabel } from "@/lib/auth/role-labels";
 import type { UserRole } from "@/lib/types";
@@ -56,7 +57,14 @@ export function InfrastructureStoriesSection({
               className="flex h-full flex-col rounded-xl border border-ops-border bg-ops-surface p-5 shadow-[var(--ops-shadow-sm)] ring-1 ring-ops-primary/[0.03] transition hover:border-ops-primary/20 hover:shadow-[var(--ops-shadow-md)]"
             >
               <div className="flex flex-wrap items-start justify-between gap-2">
-                <h3 className="text-base font-semibold leading-snug text-ops-text">{story.title}</h3>
+                <div className="flex min-w-0 items-center gap-1.5">
+                  <h3 className="text-base font-semibold leading-snug text-ops-text">{story.title}</h3>
+                  <InfoTooltip
+                    label={`What does the ${story.title} workflow demonstrate?`}
+                    content={story.workflowHint}
+                    align="start"
+                  />
+                </div>
                 <span
                   className={`inline-flex shrink-0 rounded-md px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.08em] ring-1 ${statusStyles[story.status]}`}
                 >
