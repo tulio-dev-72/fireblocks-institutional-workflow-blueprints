@@ -18,10 +18,6 @@ import { useLandingInfrastructure } from "@/lib/operations/use-landing-infrastru
 import { useAppStore } from "@/lib/store";
 import type { UserRole } from "@/lib/types";
 
-function scrollToSection(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
 export function EnterpriseLandingPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -146,12 +142,7 @@ export function EnterpriseLandingPage() {
         onOpenCommandCenter={() => setCommandCenterOpen(true)}
       />
 
-      <LandingHero
-        stats={infrastructure.heroStats}
-        launching={busyRole !== null}
-        onLaunchSandbox={() => void handleEnterRole("analyst")}
-        onBrowseScenarios={() => scrollToSection("settlement-scenarios")}
-      />
+      <LandingHero stats={infrastructure.heroStats} />
 
       <InfrastructureStoriesSection
         busyRole={busyRole}

@@ -1,7 +1,5 @@
 "use client";
 
-import { PrimaryButton } from "@/components/ui/primitives";
-
 type HeroStatStatus = "active" | "provisioned" | "inactive";
 
 type HeroStat = {
@@ -33,17 +31,9 @@ const STAT_STYLES: Record<
 
 type LandingHeroProps = {
   stats: HeroStat[];
-  launching: boolean;
-  onLaunchSandbox: () => void;
-  onBrowseScenarios: () => void;
 };
 
-export function LandingHero({
-  stats,
-  launching,
-  onLaunchSandbox,
-  onBrowseScenarios,
-}: LandingHeroProps) {
+export function LandingHero({ stats }: LandingHeroProps) {
   return (
     <section className="landing-hero relative overflow-hidden">
       <div className="landing-grid-bg" aria-hidden />
@@ -61,24 +51,6 @@ export function LandingHero({
             Operational governance for institutional stablecoin settlement workflows — policy-driven
             authorization, MPC custody, and on-chain settlement powered by Fireblocks infrastructure.
           </p>
-
-          <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-5">
-            <PrimaryButton
-              type="button"
-              className="w-full sm:w-auto sm:min-w-[15rem]"
-              onClick={onLaunchSandbox}
-              disabled={launching}
-            >
-              {launching ? "Launching…" : "Launch Operational Sandbox"}
-            </PrimaryButton>
-            <button
-              type="button"
-              onClick={onBrowseScenarios}
-              className="text-sm font-medium text-ops-text-secondary underline-offset-4 transition hover:text-ops-text hover:underline"
-            >
-              Browse settlement scenarios ↓
-            </button>
-          </div>
         </div>
 
         <div className="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
