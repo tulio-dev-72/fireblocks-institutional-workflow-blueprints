@@ -8,6 +8,7 @@ import {
   type TapRuleAction,
 } from "@/data/fireblocks-tap-policy";
 import { Card, SectionHeader } from "@/components/ui/primitives";
+import { InfoTooltip } from "@/components/ui/info-tooltip";
 
 function ActionBadge({ action }: { action: TapRuleAction }) {
   const style =
@@ -83,6 +84,24 @@ export function LiveTapPolicyPanel() {
         </span>
         {FIREBLOCKS_TAP_POLICY_META.source}. {FIREBLOCKS_TAP_POLICY_META.mirrorNote}
       </p>
+
+      <div className="mt-2 flex items-start gap-1.5 rounded-lg border border-ops-border-subtle bg-ops-overlay/40 px-3 py-2">
+        <p className="text-[10px] leading-relaxed text-ops-text-dim">
+          <span className="font-semibold uppercase tracking-[0.1em] text-ops-text-secondary">
+            Demo scope ·{" "}
+          </span>
+          The manager authorization gate is enforced at the application layer in this demo. Custom
+          TAP rules couldn&apos;t be authored in this sandbox, so the rules above are the workspace&apos;s
+          existing policy, shown read-only.
+        </p>
+        <InfoTooltip
+          label="Why is the gate enforced in the app?"
+          content="In a hardened production deployment the approval gate binds to Fireblocks TAP, so the MPC custody layer itself enforces it and even a compromised app server can't release funds. This sandbox doesn't permit authoring restrictive TAP rules, so the app performs the gate and Fireblocks executes the signing. The custody, signing, and webhook lifecycle are still real."
+          side="top"
+          align="end"
+          className="ml-auto shrink-0"
+        />
+      </div>
     </Card>
   );
 }

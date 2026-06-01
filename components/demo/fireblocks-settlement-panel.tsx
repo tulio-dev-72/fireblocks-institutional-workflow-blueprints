@@ -3,6 +3,7 @@
 import type { Transfer } from "@/lib/types";
 import { Card, SectionHeader } from "@/components/ui/primitives";
 import { FireblocksStatusBadge } from "@/components/ui/badges";
+import { InfoTooltip } from "@/components/ui/info-tooltip";
 import {
   WEBHOOK_LIFECYCLE_STEPS,
   getStatusSourceLabel,
@@ -64,9 +65,14 @@ function LifecycleModeBanner({
         {lifecycleMode === "live" ? "Live Fireblocks lifecycle" : "Simulated lifecycle"}
       </span>
       {statusSource ? (
-        <span className="text-[11px] font-medium text-ops-text-secondary">
+        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-ops-text-secondary">
           Status source:{" "}
           <span className="text-ops-text">{getStatusSourceLabel(statusSource)}</span>
+          <InfoTooltip
+            label="What is the status source?"
+            content="Where each lifecycle update came from. Fireblocks webhook = pushed event (requires the persistence layer to store deliveries). Fireblocks API = same real status pulled by polling when webhook push isn't wired in this deployment. Demo simulation = no live transaction, statuses are stepped through for illustration. Webhook and API are both real Fireblocks data; only simulation is synthetic."
+            side="top"
+          />
         </span>
       ) : null}
     </div>
