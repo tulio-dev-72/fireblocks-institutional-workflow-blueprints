@@ -3,6 +3,8 @@
 import { DemoTopBar } from "@/components/demo/top-bar";
 import { AuditTimeline } from "@/components/demo/audit-timeline";
 import { FireblocksSettlementPanel } from "@/components/demo/fireblocks-settlement-panel";
+import { LiveTapPolicyPanel } from "@/components/demo/live-tap-policy-panel";
+import { PolicyExecutionTimeline } from "@/components/demo/policy-execution-timeline";
 import { ConnectedWorkflowStepper } from "@/components/demo/connected-workflow-stepper";
 import { Card, SectionHeader } from "@/components/ui/primitives";
 import { APP_TERMS } from "@/data/infrastructure-mapping";
@@ -86,6 +88,13 @@ export default function AuditPage() {
             lifecycleMode={lifecycleMode}
             statusSource={statusSource}
           />
+        ) : null}
+
+        {lastTransfer ? (
+          <>
+            <LiveTapPolicyPanel />
+            <PolicyExecutionTimeline transfer={lastTransfer} />
+          </>
         ) : null}
       </main>
     </>
