@@ -5,9 +5,14 @@ import { IntegrationStatusBadge } from "@/components/ui/badges";
 type LandingHeaderProps = {
   connected: boolean;
   onOpenArchitecture: () => void;
+  onOpenCommandCenter: () => void;
 };
 
-export function LandingHeader({ connected, onOpenArchitecture }: LandingHeaderProps) {
+export function LandingHeader({
+  connected,
+  onOpenArchitecture,
+  onOpenCommandCenter,
+}: LandingHeaderProps) {
   return (
     <header className="relative z-20 border-b border-ops-border/80 bg-ops-surface/90 shadow-[var(--ops-shadow-sm)] backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6 lg:px-8">
@@ -31,6 +36,13 @@ export function LandingHeader({ connected, onOpenArchitecture }: LandingHeaderPr
               <rect x="3" y="13" width="14" height="4" rx="1" />
             </svg>
             Architecture
+          </button>
+          <button
+            type="button"
+            onClick={onOpenCommandCenter}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-ops-info/30 bg-ops-info-muted/20 px-3 py-2 text-xs font-semibold text-ops-info shadow-[var(--ops-shadow-sm)] transition hover:bg-ops-info-muted/35"
+          >
+            Trusted AI Command Center →
           </button>
           <IntegrationStatusBadge status={connected ? "connected" : "offline"} />
         </div>

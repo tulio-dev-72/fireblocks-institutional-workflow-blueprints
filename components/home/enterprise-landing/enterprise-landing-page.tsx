@@ -3,13 +3,13 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "@/components/auth/auth-provider";
+import { SandboxLoginScreen } from "@/components/auth/sandbox-login-screen";
 import { PageLoadingState } from "@/components/ui/page-loading-state";
 import { InfrastructureStoriesSection } from "@/components/home/enterprise-landing/infrastructure-stories-section";
-import { LandingAiIntelligence } from "@/components/home/enterprise-landing/landing-ai-intelligence";
+import { LandingCommandCenterModal } from "@/components/home/enterprise-landing/landing-command-center-modal";
 import { LandingArchitectureModal } from "@/components/home/enterprise-landing/landing-architecture-modal";
 import { LandingHeader } from "@/components/home/enterprise-landing/landing-header";
 import { LandingHero } from "@/components/home/enterprise-landing/landing-hero";
-import { LiveOperationsPreview } from "@/components/home/enterprise-landing/live-operations-preview";
 import { SandboxAccessSection } from "@/components/home/enterprise-landing/sandbox-access-section";
 import { prepareSandboxSession, resolveSandboxNavigation } from "@/lib/auth/prepare-sandbox-session";
 import { launchSandboxRole } from "@/lib/auth/sandbox-login";
@@ -33,6 +33,7 @@ export function EnterpriseLandingPage() {
   const [entering, setEntering] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [architectureOpen, setArchitectureOpen] = useState(false);
+  const [commandCenterOpen, setCommandCenterOpen] = useState(false);
   const statusTracked = useRef(false);
 
   useEffect(() => {
@@ -87,6 +88,9 @@ export function EnterpriseLandingPage() {
           setWorkflowStep,
         });
 
+        // Keep the "signing in as {role}" screen visible long enough to read.
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+
         const destination = resolveSandboxNavigation(result.role, requestedNext);
         router.push(destination);
         router.refresh();
@@ -113,6 +117,10 @@ export function EnterpriseLandingPage() {
     return <PageLoadingState label="Loading Treasury Control Center…" />;
   }
 
+  if (busyRole) {
+    return <SandboxLoginScreen role={busyRole} />;
+  }
+
   if (entering || (effectiveRole && !busyRole)) {
     return <PageLoadingState label="Entering operational workspace…" />;
   }
@@ -122,6 +130,7 @@ export function EnterpriseLandingPage() {
       <LandingHeader
         connected={infrastructure.connected}
         onOpenArchitecture={() => setArchitectureOpen(true)}
+        onOpenCommandCenter={() => setCommandCenterOpen(true)}
       />
 
       <LandingHero
@@ -135,20 +144,18 @@ export function EnterpriseLandingPage() {
         onEnterRole={(role) => void handleEnterRole(role)}
       />
 
-      <LiveOperationsPreview
-        preview={infrastructure.preview}
-        infrastructureItems={infrastructure.infrastructureItems}
-        connected={infrastructure.connected}
-      />
-
-      <LandingAiIntelligence insights={infrastructure.preview.insights} />
-
       <SandboxAccessSection busyRole={busyRole} error={error} onEnterRole={(role) => void handleEnterRole(role)} />
 
       <LandingArchitectureModal
         open={architectureOpen}
         fireblocksConnected={infrastructure.connected}
         onClose={() => setArchitectureOpen(false)}
+      />
+
+      <LandingCommandCenterModal
+        open={commandCenterOpen}
+        insights={infrastructure.preview.insights}
+        onClose={() => setCommandCenterOpen(false)}
       />
     </div>
   );

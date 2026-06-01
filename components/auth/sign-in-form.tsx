@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/components/auth/auth-provider";
+import { SandboxLoginScreen } from "@/components/auth/sandbox-login-screen";
 import { Card, SecondaryButton, SectionHeader } from "@/components/ui/primitives";
 import {
   ACCESS_PORTAL_TITLE,
@@ -62,6 +63,9 @@ export function SignInForm() {
           setWorkflowStep,
         });
 
+        // Keep the "signing in as {role}" screen visible long enough to read.
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+
         router.push(resolveSandboxNavigation(result.role, requestedNext));
         router.refresh();
       } catch (enterError) {
@@ -84,6 +88,10 @@ export function SignInForm() {
 
   if (!isSupabaseAuth) {
     return null;
+  }
+
+  if (busyRole) {
+    return <SandboxLoginScreen role={busyRole} />;
   }
 
   return (
