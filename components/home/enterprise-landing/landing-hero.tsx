@@ -33,11 +33,17 @@ const STAT_STYLES: Record<
 
 type LandingHeroProps = {
   stats: HeroStat[];
+  launching: boolean;
   onLaunchSandbox: () => void;
-  onViewRoles: () => void;
+  onBrowseScenarios: () => void;
 };
 
-export function LandingHero({ stats, onLaunchSandbox, onViewRoles }: LandingHeroProps) {
+export function LandingHero({
+  stats,
+  launching,
+  onLaunchSandbox,
+  onBrowseScenarios,
+}: LandingHeroProps) {
   return (
     <section className="landing-hero relative overflow-hidden">
       <div className="landing-grid-bg" aria-hidden />
@@ -61,15 +67,16 @@ export function LandingHero({ stats, onLaunchSandbox, onViewRoles }: LandingHero
               type="button"
               className="w-full sm:w-auto sm:min-w-[15rem]"
               onClick={onLaunchSandbox}
+              disabled={launching}
             >
-              Launch Operational Sandbox
+              {launching ? "Launching…" : "Launch Operational Sandbox"}
             </PrimaryButton>
             <button
               type="button"
-              onClick={onViewRoles}
+              onClick={onBrowseScenarios}
               className="text-sm font-medium text-ops-text-secondary underline-offset-4 transition hover:text-ops-text hover:underline"
             >
-              See institutional roles ↓
+              Browse settlement scenarios ↓
             </button>
           </div>
         </div>

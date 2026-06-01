@@ -140,8 +140,9 @@ export function EnterpriseLandingPage() {
 
       <LandingHero
         stats={infrastructure.heroStats}
-        onLaunchSandbox={() => scrollToSection("settlement-scenarios")}
-        onViewRoles={() => scrollToSection("institutional-roles")}
+        launching={busyRole !== null}
+        onLaunchSandbox={() => void handleEnterRole("analyst")}
+        onBrowseScenarios={() => scrollToSection("settlement-scenarios")}
       />
 
       <InfrastructureStoriesSection
