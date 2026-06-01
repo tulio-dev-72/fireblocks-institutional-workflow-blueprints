@@ -76,6 +76,7 @@ export function useLandingInfrastructure() {
         id: "fireblocks",
         label: label(connected, "Fireblocks Connected", "Fireblocks Provisioned", "Fireblocks Offline"),
         status: resolve(connected),
+        hint: "Whether this workspace has a live link to the Fireblocks API. When connected, vault balances, accounts, and transactions are read from and written to the real Fireblocks sandbox — not mocked. The public landing reads “Provisioned” (credentials configured server-side) until you enter an operational role.",
       },
       {
         id: "webhook",
@@ -86,16 +87,19 @@ export function useLandingInfrastructure() {
           "Webhook Stream Offline",
         ),
         status: resolve(treasury.webhookEndpointActive),
+        hint: "Fireblocks pushes transaction lifecycle events — signing, broadcast, confirmation — to this app’s webhook endpoint. “Active” means that endpoint is live and receiving real, signature-verified event deliveries that drive the settlement timeline and audit trail.",
       },
       {
         id: "mpc",
         label: label(funded, "MPC Custody Layer Online", "MPC Custody Provisioned", "MPC Custody Offline"),
         status: resolve(funded),
+        hint: "The Fireblocks Multi-Party Computation custody layer that holds the wallet keys. The signing key is split across parties, so no single person or server ever holds a full private key — transactions are only signed once policy is satisfied. “Online” means custody is provisioned and ready to sign approved settlements.",
       },
       {
         id: "treasury",
         label: label(funded, "Treasury Main Funded", "Treasury Main Provisioned", "Treasury Main Unfunded"),
         status: resolve(funded),
+        hint: "The funding status of the Treasury Main vault account. “Funded” means it holds enough Sepolia test ETH to cover gas and settlement, so an authorized transaction can actually be signed and broadcast on-chain.",
       },
     ];
   }, [treasury]);

@@ -1,11 +1,14 @@
 "use client";
 
+import { InfoTooltip } from "@/components/ui/info-tooltip";
+
 type HeroStatStatus = "active" | "provisioned" | "inactive";
 
 type HeroStat = {
   id: string;
   label: string;
   status: HeroStatStatus;
+  hint?: string;
 };
 
 const STAT_STYLES: Record<
@@ -64,6 +67,15 @@ export function LandingHero({ stats }: LandingHeroProps) {
                     aria-hidden
                   />
                   <p className={`text-sm font-semibold ${style.label}`}>{stat.label}</p>
+                  {stat.hint ? (
+                    <InfoTooltip
+                      label={`About ${stat.label}`}
+                      content={stat.hint}
+                      side="bottom"
+                      align="start"
+                      className="ml-auto"
+                    />
+                  ) : null}
                 </div>
                 <p className="mt-1.5 text-[11px] text-ops-text-dim">{style.caption}</p>
               </div>
