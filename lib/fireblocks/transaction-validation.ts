@@ -134,7 +134,10 @@ function resolveAssetId(transfer: Transfer, treasury: FireblocksTreasuryState): 
       normalized.includes(asset.assetId.toUpperCase()),
   )?.assetId;
 
-  return partial ?? treasury.assets[0]?.assetId ?? null;
+  // Fail closed: never silently substitute a different activated asset. If the
+  // requested asset isn't held in the vault, validation surfaces a clear
+  // "asset not activated" error instead of submitting something else.
+  return partial ?? null;
 }
 
 export function buildTransactionDebugInfo(input: {
