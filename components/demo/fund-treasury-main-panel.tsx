@@ -85,6 +85,8 @@ export function FundTreasuryMainPanel() {
           label="Sandbox funding"
           title="Fund Treasury Main"
           subtitle="Prepare Treasury Main with Sepolia test ETH before authorization and settlement tests."
+          titleHintLabel="What is sandbox funding?"
+          titleHint="Before any settlement can broadcast, the Treasury Main vault needs Sepolia test ETH to pay network gas. This is sandbox funding — free testnet ETH from a faucet, with no real-world value. It mirrors how a production treasury must hold the asset and gas it needs before it can transact."
         />
         <IntegrationStatusBadge status={integrationStatus} />
       </div>

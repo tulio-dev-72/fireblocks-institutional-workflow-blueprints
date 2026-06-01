@@ -70,6 +70,8 @@ export function FireblocksSettlementInfrastructure({
             label="Fireblocks sandbox"
             title="Treasury Main custody"
             subtitle={sandboxNotice}
+            titleHintLabel="What is the Fireblocks sandbox?"
+            titleHint="Fireblocks is the custody and signing platform that holds the keys and executes transactions. The sandbox is its free test workspace, wired to testnets like Sepolia. Everything in this panel — vault ID, activated assets, balances, deposit address — is read live from the Fireblocks API via the SDK, not mocked."
           />
         </div>
         <IntegrationStatusBadge status={state.integrationStatus} />

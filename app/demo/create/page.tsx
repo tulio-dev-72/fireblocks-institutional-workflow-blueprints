@@ -140,6 +140,8 @@ export default function CreateTransferPage() {
           <Card variant="elevated">
             <SectionHeader
               label="Settlement request"
+              titleHintLabel="What is the settlement request?"
+              titleHint="The outbound transaction being submitted for governance: what's moving, from which vault, to whom, and on which rail. It's read-only here because the active scenario defines it — submitting routes it into policy evaluation and (if required) manager authorization before Fireblocks signs."
               title="Outbound settlement"
               subtitle={
                 isPrimary

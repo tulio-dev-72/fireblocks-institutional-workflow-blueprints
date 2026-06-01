@@ -9,6 +9,8 @@ export type WorkflowStep = {
   shortLabel: string;
   path: string;
   fireblocksConcept: string;
+  /** Plain-language explanation of the step (info tooltip). */
+  description: string;
 };
 
 export const workflowSteps: WorkflowStep[] = [
@@ -18,6 +20,8 @@ export const workflowSteps: WorkflowStep[] = [
     shortLabel: "Request",
     path: "/demo/create",
     fireblocksConcept: "Settlement request draft",
+    description:
+      "The analyst drafts the settlement — asset, amount, source vault, counterparty, and rail. Nothing leaves custody yet; this stages the transaction for evaluation.",
   },
   {
     id: "policy",
@@ -25,6 +29,8 @@ export const workflowSteps: WorkflowStep[] = [
     shortLabel: "Policy",
     path: "/demo/policy",
     fireblocksConcept: "TAP + business rules",
+    description:
+      "The settlement is checked against business rules and the Fireblocks Transaction Authorization Policy (TAP). Low-risk transfers may auto-clear; high-value or unlisted destinations are routed for authorization.",
   },
   {
     id: "approval",
@@ -32,6 +38,8 @@ export const workflowSteps: WorkflowStep[] = [
     shortLabel: "Authorize",
     path: "/demo/approvals",
     fireblocksConcept: "Authorization release",
+    description:
+      "A Treasury Manager reviews and authorizes the held settlement — the dual-control checkpoint. The initiator cannot authorize their own request.",
   },
   {
     id: "custody",
@@ -39,6 +47,8 @@ export const workflowSteps: WorkflowStep[] = [
     shortLabel: "MPC Custody",
     path: "/demo/approvals",
     fireblocksConcept: "Server-side SDK · POST /v1/transactions",
+    description:
+      "On authorization, Fireblocks creates the transaction via the server-side SDK (POST /v1/transactions) and signs it with MPC. No private key is ever held by this app.",
   },
   {
     id: "webhook",
@@ -46,6 +56,8 @@ export const workflowSteps: WorkflowStep[] = [
     shortLabel: "Webhooks",
     path: "/demo/approvals",
     fireblocksConcept: "Fireblocks authorization lifecycle",
+    description:
+      "Fireblocks pushes lifecycle events — signing, broadcast, confirmation — to the app's webhook endpoint, advancing the settlement state until the network confirms.",
   },
   {
     id: "audit",
@@ -53,6 +65,8 @@ export const workflowSteps: WorkflowStep[] = [
     shortLabel: "Audit",
     path: "/demo/audit",
     fireblocksConcept: "Transaction history",
+    description:
+      "Every step — request, policy outcome, approver, Fireblocks transaction ID, and webhook events — is recorded as an immutable audit trail for compliance review.",
   },
 ];
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { InfoTooltip } from "@/components/ui/info-tooltip";
 import { getWorkflowStepIndex, workflowSteps, type WorkflowStepId } from "@/lib/workflow";
 
 export function WorkflowStepper({ currentStep }: { currentStep: WorkflowStepId }) {
@@ -14,8 +15,14 @@ export function WorkflowStepper({ currentStep }: { currentStep: WorkflowStepId }
           <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-ops-text-secondary">
             Step {currentIndex + 1} of {workflowSteps.length}
           </p>
-          <span className="rounded-md bg-ops-primary-muted px-2 py-0.5 text-[10px] font-semibold text-ops-primary">
+          <span className="inline-flex items-center gap-1 rounded-md bg-ops-primary-muted px-2 py-0.5 text-[10px] font-semibold text-ops-primary">
             {current.shortLabel}
+            <InfoTooltip
+              label={`About the ${current.shortLabel} step`}
+              content={current.description}
+              side="bottom"
+              align="end"
+            />
           </span>
         </div>
         <p className="mt-1 text-[10px] text-ops-text-dim">{current.label}</p>
@@ -70,7 +77,7 @@ export function WorkflowStepper({ currentStep }: { currentStep: WorkflowStepId }
                 {index + 1}
               </span>
               <span
-                className={`mt-0.5 text-[10px] font-semibold leading-tight ${
+                className={`mt-0.5 flex items-center gap-1 text-[10px] font-semibold leading-tight ${
                   isCurrent
                     ? "text-ops-text"
                     : isComplete
@@ -78,7 +85,12 @@ export function WorkflowStepper({ currentStep }: { currentStep: WorkflowStepId }
                       : "text-ops-text-dim"
                 }`}
               >
-                {step.shortLabel}
+                <span className="min-w-0 leading-tight">{step.shortLabel}</span>
+                <InfoTooltip
+                  label={`About the ${step.shortLabel} step`}
+                  content={step.description}
+                  side="bottom"
+                />
               </span>
             </li>
           );
