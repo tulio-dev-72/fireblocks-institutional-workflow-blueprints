@@ -8,7 +8,7 @@ export const PRIMARY_SETTLEMENT = {
   amount: 0.001,
   sourceVault: "Treasury Main",
   counterparty: "Acme Liquidity LLC",
-  counterpartyAddress: "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+  counterpartyAddress: "0x742d35cc6634c0532925a3b844bc454e4438f44e",
   settlementRail: SETTLEMENT_RAIL_SEPOLIA,
   reason: "Vendor settlement",
   policyTrigger: "High-Value Authorization",
