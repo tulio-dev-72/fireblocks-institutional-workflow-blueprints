@@ -107,6 +107,7 @@ export async function fetchFireblocksTreasuryState(): Promise<FireblocksTreasury
       ...OFFLINE_TREASURY_STATE,
       message: status.message,
       integrationStatus: status.integrationStatus,
+      configured: status.configured,
       basePath: status.basePath,
       webhookEndpointActive,
     };

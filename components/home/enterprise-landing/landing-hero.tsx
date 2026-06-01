@@ -2,10 +2,33 @@
 
 import { GhostButton, PrimaryButton } from "@/components/ui/primitives";
 
+type HeroStatStatus = "active" | "provisioned" | "inactive";
+
 type HeroStat = {
   id: string;
   label: string;
-  active: boolean;
+  status: HeroStatStatus;
+};
+
+const STAT_STYLES: Record<
+  HeroStatStatus,
+  { dot: string; label: string; caption: string }
+> = {
+  active: {
+    dot: "bg-ops-success shadow-[0_0_10px_rgba(6,95,70,0.45)]",
+    label: "text-ops-success",
+    caption: "Live infrastructure signal",
+  },
+  provisioned: {
+    dot: "bg-ops-info shadow-[0_0_10px_rgba(37,99,235,0.35)]",
+    label: "text-ops-info",
+    caption: "Provisioned · enter a role for live status",
+  },
+  inactive: {
+    dot: "bg-ops-text-dim/35",
+    label: "text-ops-text-secondary",
+    caption: "Awaiting configuration",
+  },
 };
 
 type LandingHeroProps = {
@@ -52,31 +75,24 @@ export function LandingHero({ stats, onLaunchSandbox, onExploreStories }: Landin
         </div>
 
         <div className="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {stats.map((stat) => (
-            <div
-              key={stat.id}
-              className="landing-stat-float rounded-xl border border-ops-border/90 bg-ops-surface/95 px-4 py-3.5 shadow-[var(--ops-shadow-md)] backdrop-blur-sm"
-            >
-              <div className="flex items-center gap-2.5">
-                <span
-                  className={`inline-flex h-2.5 w-2.5 shrink-0 rounded-full ${
-                    stat.active ? "bg-ops-success shadow-[0_0_10px_rgba(6,95,70,0.45)]" : "bg-ops-text-dim/35"
-                  }`}
-                  aria-hidden
-                />
-                <p
-                  className={`text-sm font-semibold ${
-                    stat.active ? "text-ops-success" : "text-ops-text-secondary"
-                  }`}
-                >
-                  {stat.label}
-                </p>
+          {stats.map((stat) => {
+            const style = STAT_STYLES[stat.status];
+            return (
+              <div
+                key={stat.id}
+                className="landing-stat-float rounded-xl border border-ops-border/90 bg-ops-surface/95 px-4 py-3.5 shadow-[var(--ops-shadow-md)] backdrop-blur-sm"
+              >
+                <div className="flex items-center gap-2.5">
+                  <span
+                    className={`inline-flex h-2.5 w-2.5 shrink-0 rounded-full ${style.dot}`}
+                    aria-hidden
+                  />
+                  <p className={`text-sm font-semibold ${style.label}`}>{stat.label}</p>
+                </div>
+                <p className="mt-1.5 text-[11px] text-ops-text-dim">{style.caption}</p>
               </div>
-              <p className="mt-1.5 text-[11px] text-ops-text-dim">
-                {stat.active ? "Live infrastructure signal" : "Awaiting configuration"}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

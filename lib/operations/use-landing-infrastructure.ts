@@ -55,37 +55,25 @@ export function useLandingInfrastructure() {
     [treasury],
   );
 
-  const heroStats = useMemo(
-    () => [
-      {
-        id: "fireblocks",
-        label: "Fireblocks Connected",
-        active: treasury.integrationStatus === "connected",
-      },
-      {
-        id: "webhook",
-        label: "Webhook Stream Active",
-        active: treasury.webhookEndpointActive,
-      },
-      {
-        id: "mpc",
-        label: "MPC Custody Layer Online",
-        active:
-          treasury.integrationStatus === "connected" &&
-          (treasury.fundingStatus === "ready" ||
-            (treasury.sepoliaEthAvailable ?? 0) > 0),
-      },
-      {
-        id: "treasury",
-        label: "Treasury Main Funded",
-        active:
-          treasury.integrationStatus === "connected" &&
-          (treasury.fundingStatus === "ready" ||
-            (treasury.sepoliaEthAvailable ?? 0) > 0),
-      },
-    ],
-    [treasury],
-  );
+  const heroStats = useMemo(() => {
+    const connected = treasury.integrationStatus === "connected";
+    // Credentials are configured server-side, but live detail is gated behind
+    // an operational role on the public landing (anonymous = configured, not connected).
+    const provisioned = connected || treasury.configured;
+    const funded =
+      connected &&
+      (treasury.fundingStatus === "ready" || (treasury.sepoliaEthAvailable ?? 0) > 0);
+
+    const resolve = (live: boolean): "active" | "provisioned" | "inactive" =>
+      live ? "active" : provisioned ? "provisioned" : "inactive";
+
+    return [
+      { id: "fireblocks", label: "Fireblocks Connected", status: resolve(connected) },
+      { id: "webhook", label: "Webhook Stream Active", status: resolve(treasury.webhookEndpointActive) },
+      { id: "mpc", label: "MPC Custody Layer Online", status: resolve(funded) },
+      { id: "treasury", label: "Treasury Main Funded", status: resolve(funded) },
+    ];
+  }, [treasury]);
 
   const preview = useMemo(() => buildLandingPreviewSnapshot(treasury), [treasury]);
 
