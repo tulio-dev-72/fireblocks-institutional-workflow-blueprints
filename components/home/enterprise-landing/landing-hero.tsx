@@ -39,12 +39,9 @@ export function LandingHero({ stats }: LandingHeroProps) {
       <div className="landing-grid-bg" aria-hidden />
       <div className="landing-hero-glow" aria-hidden />
 
-      <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+      <div className="relative mx-auto max-w-7xl px-4 pt-14 pb-9 sm:px-6 sm:pt-20 sm:pb-11 lg:px-8 lg:pt-24 lg:pb-12">
         <div className="max-w-3xl">
-          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-ops-info">
-            Enterprise treasury infrastructure
-          </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-ops-text sm:text-5xl lg:text-[3.25rem] lg:leading-[1.08]">
+          <h1 className="text-4xl font-semibold tracking-tight text-ops-text sm:text-5xl lg:text-[3.25rem] lg:leading-[1.08]">
             Treasury Control Center
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-ops-text-secondary sm:text-lg sm:leading-relaxed">
@@ -53,7 +50,7 @@ export function LandingHero({ stats }: LandingHeroProps) {
           </p>
         </div>
 
-        <div className="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {stats.map((stat) => {
             const style = STAT_STYLES[stat.status];
             return (
