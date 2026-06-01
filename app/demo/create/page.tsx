@@ -37,19 +37,21 @@ export default function CreateTransferPage() {
     null;
 
   const connected =
-    isPrimary && treasury.state.integrationStatus === "connected" && Boolean(treasury.state.vault);
+    treasury.state.integrationStatus === "connected" && Boolean(treasury.state.vault);
   const ethAvailable =
     treasury.state.sepoliaEthAvailable ?? treasury.sepoliaEthAsset?.available ?? 0;
   const needsFunding =
-    isPrimary && connected && (treasury.state.fundingStatus === "needs_funding" || ethAvailable <= 0);
+    connected && (treasury.state.fundingStatus === "needs_funding" || ethAvailable <= 0);
 
-  // Settlement details: live Fireblocks values for the primary scenario, otherwise
-  // the entered scenario's representative initiation.
-  const settlementAsset = isPrimary
-    ? connected && treasury.selectedAsset
-      ? treasury.selectedAsset.assetId
-      : PRIMARY_SETTLEMENT.asset
+  // Every scenario settles from the live Treasury Main vault. The scenario
+  // defines the amount, counterparty, and reason; the asset settled is whatever
+  // the vault actually holds (the selected activated asset), so the displayed
+  // asset always matches what Fireblocks signs.
+  const fallbackAsset = isPrimary
+    ? PRIMARY_SETTLEMENT.asset
     : scenarioSettlement?.asset ?? PRIMARY_SETTLEMENT.asset;
+  const settlementAsset =
+    connected && treasury.selectedAsset ? treasury.selectedAsset.assetId : fallbackAsset;
   const settlementAmount = isPrimary
     ? PRIMARY_SETTLEMENT.amount
     : scenarioSettlement?.amount ?? PRIMARY_SETTLEMENT.amount;
@@ -62,10 +64,15 @@ export default function CreateTransferPage() {
   const settlementReason = isPrimary
     ? PRIMARY_SETTLEMENT.reason
     : scenarioSettlement?.reason ?? PRIMARY_SETTLEMENT.reason;
-  const sourceVaultName = treasury.state.vault?.name ?? PRIMARY_SETTLEMENT.sourceVault;
-  const settlementRail = isPrimary
+  const sourceVaultName =
+    (connected ? treasury.state.vault?.name : undefined) ??
+    (isPrimary ? PRIMARY_SETTLEMENT.sourceVault : scenarioSettlement?.sourceVault) ??
+    PRIMARY_SETTLEMENT.sourceVault;
+  const settlementRail = connected
     ? treasury.state.settlementRail || SETTLEMENT_RAIL_SEPOLIA
-    : scenarioSettlement?.settlementRail ?? SETTLEMENT_RAIL_SEPOLIA;
+    : isPrimary
+      ? SETTLEMENT_RAIL_SEPOLIA
+      : scenarioSettlement?.settlementRail ?? SETTLEMENT_RAIL_SEPOLIA;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -83,8 +90,8 @@ export default function CreateTransferPage() {
       destination,
       destinationLabel: counterparty,
       reason: settlementReason,
-      sourceVaultId: isPrimary ? treasury.state.vault?.id : undefined,
-      sourceVault: isPrimary ? treasury.state.vault?.name ?? PRIMARY_SETTLEMENT.sourceVault : sourceVaultName,
+      sourceVaultId: connected ? treasury.state.vault?.id : undefined,
+      sourceVault: sourceVaultName,
       settlementRail,
       counterparty,
     });
@@ -112,17 +119,23 @@ export default function CreateTransferPage() {
     <>
       <DemoTopBar
         title="Initiate Settlement"
-        subtitle={
-          isPrimary
-            ? "Treasury Analyst submits Sepolia test settlement for policy evaluation and Fireblocks authorization."
-            : `Treasury Analyst initiates the ${scenario.headline.toLowerCase()} for policy evaluation and Fireblocks authorization.`
-        }
+        subtitle="Treasury Analyst submits the settlement for policy evaluation and Fireblocks authorization."
       />
       <ConnectedWorkflowStepper />
 
       <main className="ops-page">
         <form onSubmit={handleSubmit} className="space-y-3">
-          {isPrimary ? (
+          {!isPrimary ? (
+            <Card variant="accent">
+              <SectionHeader
+                label="Scenario context"
+                title={scenario.headline}
+                subtitle={scenario.queueSummary}
+              />
+            </Card>
+          ) : null}
+
+          {connected ? (
             <>
               <FundTreasuryMainPanel />
               <FireblocksSettlementInfrastructure treasury={treasury} amount={settlementAmount} />
@@ -130,9 +143,9 @@ export default function CreateTransferPage() {
           ) : (
             <Card variant="accent">
               <SectionHeader
-                label="Scenario context"
-                title={scenario.headline}
-                subtitle={scenario.queueSummary}
+                label="Fireblocks custody"
+                title="Connect Fireblocks to load Treasury Main"
+                subtitle="Vault balances, activated assets, and the deposit address load live from the Fireblocks SDK once the sandbox is connected."
               />
             </Card>
           )}
@@ -144,11 +157,9 @@ export default function CreateTransferPage() {
               titleHint="The outbound transaction being submitted for governance: what's moving, from which vault, to whom, and on which rail. It's read-only here because the active scenario defines it — submitting routes it into policy evaluation and (if required) manager authorization before Fireblocks signs."
               title="Outbound settlement"
               subtitle={
-                isPrimary
-                  ? connected && treasury.selectedAsset
-                    ? `Available ${formatCurrency(treasury.selectedAsset.available, treasury.selectedAsset.assetId)} in ${treasury.state.vault?.name ?? PRIMARY_SETTLEMENT.sourceVault}`
-                    : "Connect Fireblocks to load Treasury Main balances from the SDK."
-                  : `Representative settlement on the ${settlementRail} rail — submitted through the same policy and authorization pipeline.`
+                connected && treasury.selectedAsset
+                  ? `Available ${formatCurrency(treasury.selectedAsset.available, treasury.selectedAsset.assetId)} in ${treasury.state.vault?.name ?? PRIMARY_SETTLEMENT.sourceVault}`
+                  : "Connect Fireblocks to load Treasury Main balances from the SDK."
               }
             />
 
@@ -187,12 +198,12 @@ export default function CreateTransferPage() {
                 </InputLabel>
                 <TextInput
                   id="sourceVault"
-                  value={isPrimary ? treasury.state.vault?.name ?? PRIMARY_SETTLEMENT.sourceVault : sourceVaultName}
+                  value={sourceVaultName}
                   readOnly
                   className="bg-ops-overlay/50"
                 />
               </div>
-              {isPrimary && treasury.state.vault ? (
+              {connected && treasury.state.vault ? (
                 <div>
                   <InputLabel
                     htmlFor="sourceVaultId"
