@@ -10,6 +10,7 @@ import { useAuth } from "@/components/auth/auth-provider";
 import { exitSandboxSession } from "@/lib/auth/exit-sandbox-session";
 import { useFireblocksConnection } from "@/lib/fireblocks/use-fireblocks-connection";
 import { getRoleLabel, useAppStore } from "@/lib/store";
+import { getScenarioHint, getScenarioTitle } from "@/data/infrastructure-stories";
 
 const shellMaxWidth = "max-w-lg md:max-w-2xl xl:max-w-4xl";
 
@@ -26,10 +27,12 @@ export function DemoTopBar({
 }) {
   const router = useRouter();
   const { isSupabaseAuth, signOut } = useAuth();
-  const { effectiveRole, sessionReady, clearRole, actorName } = useAppStore();
+  const { effectiveRole, sessionReady, clearRole, actorName, state } = useAppStore();
   const { connected } = useFireblocksConnection();
   const displayRole = sessionReady ? effectiveRole : null;
   const displayName = sessionReady ? actorName : "Loading…";
+  const workflowTitle = sessionReady ? getScenarioTitle(state.activeBlueprint) : null;
+  const workflowHint = sessionReady ? getScenarioHint(state.activeBlueprint) : null;
   const [switcherOpen, setSwitcherOpen] = useState(false);
 
   async function handleEndSession() {
@@ -53,6 +56,24 @@ export function DemoTopBar({
             </p>
             <LiveBadge live={connected} />
           </div>
+          {workflowTitle ? (
+            <div className="mt-1.5 flex items-center gap-1.5">
+              <span className="inline-flex items-center gap-1.5 rounded-md border border-ops-border-subtle bg-ops-overlay/60 px-2 py-0.5 text-[11px] font-semibold text-ops-text-secondary">
+                <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-ops-text-dim">
+                  Workflow
+                </span>
+                <span className="text-ops-text">{workflowTitle}</span>
+              </span>
+              {workflowHint ? (
+                <InfoTooltip
+                  label={`About the ${workflowTitle} workflow`}
+                  content={workflowHint}
+                  side="bottom"
+                  align="start"
+                />
+              ) : null}
+            </div>
+          ) : null}
           <div className="mt-1 flex items-center gap-1.5">
             <h1 className="text-lg font-semibold tracking-tight text-ops-text">{title}</h1>
             {titleHint ? (

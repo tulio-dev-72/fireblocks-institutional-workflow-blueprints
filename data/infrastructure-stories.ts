@@ -136,3 +136,17 @@ export const INFRASTRUCTURE_STORIES: InfrastructureStory[] = [
     ],
   },
 ];
+
+/** Resolve a blueprint id to its short, human-readable scenario title. */
+export function getScenarioTitle(blueprintId: string | null | undefined): string | null {
+  if (!blueprintId) return null;
+  return INFRASTRUCTURE_STORIES.find((story) => story.blueprintId === blueprintId)?.title ?? null;
+}
+
+/** Resolve a blueprint id to its plain-language workflow explanation. */
+export function getScenarioHint(blueprintId: string | null | undefined): string | null {
+  if (!blueprintId) return null;
+  return (
+    INFRASTRUCTURE_STORIES.find((story) => story.blueprintId === blueprintId)?.workflowHint ?? null
+  );
+}
