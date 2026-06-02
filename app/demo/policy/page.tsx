@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { DemoTopBar } from "@/components/demo/top-bar";
 import { PolicyEvaluationCard } from "@/components/demo/policy-evaluation-card";
-import { LiveTapPolicyPanel } from "@/components/demo/live-tap-policy-panel";
+import { TapPolicyPanel } from "@/components/demo/tap-policy-panel";
 import { WorkflowNextStep } from "@/components/demo/workflow-next-step";
 import { ConnectedWorkflowStepper } from "@/components/demo/connected-workflow-stepper";
 import { Card, PrimaryButton } from "@/components/ui/primitives";
@@ -44,7 +44,7 @@ export default function PolicyCheckPage() {
       <main className="ops-page">
         <PolicyEvaluationCard transfer={transfer} />
 
-        <LiveTapPolicyPanel />
+        <TapPolicyPanel />
 
         {transfer.requiresApproval ? (
           <WorkflowNextStep

@@ -68,7 +68,7 @@ export const infrastructureMapping: InfrastructureMappingRow[] = [
       "Business rules in this app (thresholds, allowlists) plus Fireblocks TAP rules at the custody layer.",
     apiSurface: "Transaction Authorization Policy (TAP) · Co-signers",
     sandboxBehavior:
-      "App-side rules route exceptions to Transaction Authorization. Fireblocks TAP enforces custody policy on sign.",
+      "In this sandbox the approval gate runs app-side (the Editor key can't author custom TAP rules), while Fireblocks still enforces the workspace's existing TAP rules at sign time. In production the gate binds to TAP at the custody layer.",
   },
   {
     id: "authorization",

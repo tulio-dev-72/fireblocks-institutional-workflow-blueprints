@@ -61,13 +61,23 @@ function RuleCard({ rule }: { rule: TapRule }) {
   );
 }
 
-export function LiveTapPolicyPanel() {
+function MirrorBadge() {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-md bg-ops-overlay px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-ops-text-secondary ring-1 ring-ops-border-subtle">
+      <span className="h-1.5 w-1.5 rounded-full bg-ops-text-dim" aria-hidden />
+      Read-only mirror
+    </span>
+  );
+}
+
+export function TapPolicyPanel() {
   return (
     <Card variant="elevated">
       <SectionHeader
         label="Fireblocks · Transaction Authorization Policy"
-        title="Governing policy (live workspace)"
+        title="Governing policy"
         subtitle={FIREBLOCKS_TAP_POLICY_META.enforcement}
+        action={<MirrorBadge />}
         titleHintLabel="What is the Transaction Authorization Policy?"
         titleHint="Fireblocks' Transaction Authorization Policy (TAP) is a rule engine that evaluates every transaction — by initiator, source, destination, asset, and amount — and decides to allow, block, or require approval before it can be signed. It is enforced at the MPC custody layer, so it cannot be bypassed by the application."
       />

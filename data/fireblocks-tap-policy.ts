@@ -35,7 +35,7 @@ export const FIREBLOCKS_TAP_POLICY_META = {
   enforcement:
     "Enforced by Fireblocks at the MPC custody layer on every transaction — top-down, first matching rule wins.",
   mirrorNote:
-    "Read-only mirror. Our integration key has Editor rights (submit + read status); policy authoring requires an Admin key.",
+    "Read-only mirror, transcribed by hand. The Policy Editor API (both read and write) requires an Admin / Non-Signing-Admin key; our integration key is an Editor, so it can submit transactions and read their status but cannot fetch or author the policy — hence this is not fetched live.",
 } as const;
 
 export const FIREBLOCKS_TAP_POLICY: TapRule[] = [
