@@ -1,3 +1,4 @@
+import "server-only";
 import { createPublicKey, verify } from "crypto";
 import { createRemoteJWKSet, compactVerify } from "jose";
 import { getFireblocksBaseUrl, getFireblocksConfig } from "@/lib/fireblocks/config";
