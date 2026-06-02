@@ -42,6 +42,8 @@ export async function handleFireblocksWebhookEvent(
     const fireblocksTxId =
       (typeof data.id === "string" && data.id) ||
       (typeof data.txId === "string" && data.txId) ||
+      // Webhooks v2 carries the transaction id at the envelope root.
+      (typeof root.resourceId === "string" && root.resourceId) ||
       null;
     const status = (typeof data.status === "string" && data.status) || "UPDATED";
 
@@ -55,9 +57,9 @@ export async function handleFireblocksWebhookEvent(
       status,
       subStatus: typeof data.subStatus === "string" ? data.subStatus : null,
       eventType:
-        (typeof root.type === "string" && root.type) ||
         (typeof root.eventType === "string" && root.eventType) ||
-        "TRANSACTION_STATUS_UPDATED",
+        (typeof root.type === "string" && root.type) ||
+        "transaction.status.updated",
     });
 
     return {

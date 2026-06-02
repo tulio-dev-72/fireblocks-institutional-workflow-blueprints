@@ -4,7 +4,7 @@ import {
   handleFireblocksWebhookEvent,
   listFireblocksWebhookDeliveries,
 } from "@/lib/fireblocks/webhook-events";
-import { verifyFireblocksWebhookSignature } from "@/lib/fireblocks/webhook-verify";
+import { verifyFireblocksWebhook } from "@/lib/fireblocks/webhook-verify";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
   assertRole,
@@ -16,7 +16,8 @@ export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   const rawBody = Buffer.from(await request.arrayBuffer());
-  const signature =
+  const v2Signature = request.headers.get("fireblocks-webhook-signature");
+  const legacySignature =
     request.headers.get("fireblocks-signature") ??
     request.headers.get("Fireblocks-Signature");
 
@@ -24,10 +25,11 @@ export async function POST(request: Request) {
     process.env.NODE_ENV === "development" &&
     request.headers.get("x-fireblocks-webhook-simulate") === "true";
 
-  const signatureValid =
-    isInternalSim || verifyFireblocksWebhookSignature(rawBody, signature);
+  const verification = isInternalSim
+    ? { valid: true, method: "skipped" as const }
+    : await verifyFireblocksWebhook(rawBody, { v2Signature, legacySignature });
 
-  if (!signatureValid) {
+  if (!verification.valid) {
     return NextResponse.json({ error: "Invalid webhook signature." }, { status: 401 });
   }
 
@@ -71,13 +73,18 @@ export async function GET(request: Request) {
       endpoint: `${origin}/api/webhooks/fireblocks`,
       legacyEndpoint: `${origin}/api/fireblocks/webhook`,
       method: "POST",
+      webhooksVersion: "v2",
+      signature: {
+        v2Header: "Fireblocks-Webhook-Signature (detached JWS, validated via JWKS)",
+        legacyHeader: "Fireblocks-Signature (RSA-SHA512, fallback)",
+      },
       events: [
-        "TRANSACTION_CREATED",
-        "TRANSACTION_STATUS_UPDATED",
-        "TRANSACTION_APPROVAL_STATUS_UPDATED",
+        "transaction.created",
+        "transaction.status.updated",
+        "transaction.approval_status.updated",
       ],
       setup:
-        "Fireblocks Sandbox → Developer Center → Webhooks → paste endpoint URL → enable transaction events.",
+        "Fireblocks Sandbox → Developer Center → Webhooks v2 → create webhook → set endpoint URL → subscribe to the transaction.* events.",
     });
   }
 

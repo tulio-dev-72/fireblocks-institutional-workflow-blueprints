@@ -3,18 +3,24 @@ import {
   getWebhookEndpointOrigin,
   handleFireblocksWebhookEvent,
 } from "@/lib/fireblocks/webhook-events";
-import { verifyFireblocksWebhookSignature } from "@/lib/fireblocks/webhook-verify";
+import { verifyFireblocksWebhook } from "@/lib/fireblocks/webhook-verify";
 
 export const runtime = "nodejs";
 
 /** @deprecated Use POST /api/webhooks/fireblocks */
 export async function POST(request: Request) {
   const rawBody = Buffer.from(await request.arrayBuffer());
-  const signature =
+  const v2Signature = request.headers.get("fireblocks-webhook-signature");
+  const legacySignature =
     request.headers.get("fireblocks-signature") ??
     request.headers.get("Fireblocks-Signature");
 
-  if (!verifyFireblocksWebhookSignature(rawBody, signature)) {
+  const verification = await verifyFireblocksWebhook(rawBody, {
+    v2Signature,
+    legacySignature,
+  });
+
+  if (!verification.valid) {
     return NextResponse.json({ error: "Invalid webhook signature." }, { status: 401 });
   }
 
@@ -46,12 +52,13 @@ export async function GET(request: Request) {
     endpoint: `${origin}/api/webhooks/fireblocks`,
     legacyEndpoint: `${origin}/api/fireblocks/webhook`,
     method: "POST",
+    webhooksVersion: "v2",
     events: [
-      "TRANSACTION_CREATED",
-      "TRANSACTION_STATUS_UPDATED",
-      "TRANSACTION_APPROVAL_STATUS_UPDATED",
+      "transaction.created",
+      "transaction.status.updated",
+      "transaction.approval_status.updated",
     ],
     setup:
-      "Fireblocks Sandbox → Developer Center → Webhooks → Create webhook → paste endpoint URL → enable transaction events.",
+      "Fireblocks Sandbox → Developer Center → Webhooks v2 → create webhook → set endpoint URL → subscribe to the transaction.* events.",
   });
 }

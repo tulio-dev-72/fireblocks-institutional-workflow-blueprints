@@ -31,13 +31,19 @@ function parseWebhookPayload(payload: unknown) {
       readString(data, "externalTransactionId") ??
       readString(root, "externalTxId"),
     fireblocksTxId:
-      readString(data, "id") ?? readString(data, "txId") ?? readString(root, "id"),
+      readString(data, "id") ??
+      readString(data, "txId") ??
+      readString(root, "id") ??
+      // Webhooks v2 carries the transaction id at the envelope root.
+      readString(root, "resourceId"),
     status: readString(data, "status") ?? readString(root, "status") ?? "UPDATED",
     subStatus: readString(data, "subStatus") ?? readString(root, "subStatus"),
     eventType:
-      readString(root, "type") ??
+      // Webhooks v2 uses dotted event names (transaction.status.updated);
+      // v1 used TRANSACTION_STATUS_UPDATED.
       readString(root, "eventType") ??
-      "TRANSACTION_STATUS_UPDATED",
+      readString(root, "type") ??
+      "transaction.status.updated",
   };
 }
 
