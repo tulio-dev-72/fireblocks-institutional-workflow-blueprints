@@ -17,7 +17,7 @@ export function LandingHeader({
 }: LandingHeaderProps) {
   return (
     <header className="relative z-20 border-b border-ops-border/80 bg-ops-surface/90 shadow-[var(--ops-shadow-sm)] backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6 lg:px-8">
         <div className="min-w-0">
           <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-ops-text-dim">
             Institutional operational infrastructure
@@ -26,7 +26,7 @@ export function LandingHeader({
             Treasury Control Center
           </p>
         </div>
-        <div className="flex shrink-0 flex-wrap items-center gap-2 sm:gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:shrink-0 sm:gap-3">
           <button
             type="button"
             onClick={onOpenRoles}
